@@ -1,0 +1,6 @@
+# What does the ‘and’ keyword do? Is there anything special about it?
+
+* It has a lower precedence than && or || but the same precedence as 'or'.
+* The role is to provide flow control.
+** You can use 'and' to chain operations together until nil or false is returned.
+** You can do that because it does not evaluate any more than it has to.
