@@ -8,8 +8,8 @@ end
 
 puts combine(["a", "b", "c"], [1, 2, 3]).to_s
 
-def zipcombine(list1, list2)
+def zip_combine(list1, list2)
 	list1.zip(list2).flatten
 end
 
-puts zipcombine(["a", "b", "c"], [1, 2, 3]).to_s
+puts zip_combine(["a", "b", "c"], [1, 2, 3]).to_s

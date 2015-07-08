@@ -1,35 +1,35 @@
 require 'pry'
 
-def loopFor(numbers)
+def loop_for(numbers)
 	total = 0
 
-	for i in numbers
+	for number in numbers
 		#binding.pry
-		total += i
+		total += number
 	end
 
 	total
 end	
 
-puts "The total of the for loop example is #{loopFor(1..3)}"
+puts "The total of the for loop example is #{loop_for([1, 2, 3])}"
 
 
-def loopWhile(maxNumber)
+def loop_while(numbers)
 	total = 0
-	i = 1
+	i = 0
 
-	while i <= maxNumber
-		total += i
+	while i < numbers.length
+		total += numbers.fetch(i)
 		i += 1
 	end
 
 	total
 end
 
-puts "The total of the while loop example is #{loopWhile(4)}"
+puts "The total of the while loop example is #{loop_while([1, 2, 3, 4])}"
 
 
-def loopEach(numbers)
+def loop_each(numbers)
 	total = 0
 
 	numbers.each do |i|
@@ -39,11 +39,11 @@ def loopEach(numbers)
 	total
 end
 
-puts "The total of the each loop example is #{loopEach(1..5)}"
+puts "The total of the each loop example is #{loop_each([1, 2, 3, 4, 5])}"
 
 
 total = 0
 
-(1..5).each { |i| total += i }
+[1, 2, 3, 4, 5].each { |i| total += i }
 
 puts "Inline each total is #{total}"
