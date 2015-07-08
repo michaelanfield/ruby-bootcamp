@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'pry'
 
 def create_person firstname, surname, claim_to_fame
   OpenStruct.new(firstname:  firstname, surname: surname, claim_to_fame: claim_to_fame)
@@ -11,5 +12,7 @@ matz = create_person('Yukihiro', 'Matsumoto', 'Creator of Ruby')
 people = [ john, david, matz ].shuffle
 
 people.each do |person|
+  binding.pry
   puts "#{person.firstname} #{person.surname} was the: #{person.claim_to_fame}"
 end
+
