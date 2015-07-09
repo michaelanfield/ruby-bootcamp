@@ -6,16 +6,14 @@
 def fibonacci(sequence_up_to)
 	fibonacci_sequence = [0, 1]
 
-	index = 0
-	while index < (sequence_up_to - 2)
+	(1..(sequence_up_to - 2)).each {
 		fibonacci_sequence << fibonacci_sequence.last(2).reduce(0, :+)
-		index += 1
-	end
+	}
 
 	fibonacci_sequence
 end
 
-puts fibonacci(10).to_s
+p fibonacci(10)
 
 # This was taken off the tinternet. Calculates the fibonacci number at that position
 # rather than creating an array of fibonacci numbers up to the size supplied.
