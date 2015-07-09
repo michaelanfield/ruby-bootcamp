@@ -6,7 +6,7 @@
 def fibonacci(sequence_up_to)
 	fibonacci_sequence = [0, 1]
 
-	(1..(sequence_up_to - 2)).each {
+	(0...(sequence_up_to - 2)).each {
 		fibonacci_sequence << fibonacci_sequence.last(2).reduce(0, :+)
 	}
 
