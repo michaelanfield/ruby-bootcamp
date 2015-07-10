@@ -21,7 +21,7 @@ Given the following price list and shopping list print out the total cost of
 the shopping list in pounds and pence
 =end 
 
-price_list = price_list.gsub(' = ', '=').gsub('p','').gsub('£','').gsub('.', '').split.map { |item| item.split('=') }.to_h
-total = shopping_list.split.map { |item| price_list[item].to_i || 0 }.reduce(:+)
+gsub_price_list = price_list.gsub(' = ', '=').gsub('p','').gsub('£','').gsub('.', '').split.map { |item| item.split('=') }.to_h
+total = shopping_list.split.map { |item| gsub_price_list[item].to_i || 0 }.reduce(:+)
 
 p "The price of the shopping list is: #{Money.new(total, 'GBP').format}"
