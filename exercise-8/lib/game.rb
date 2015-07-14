@@ -6,6 +6,15 @@ class Game
 		paper: :rock
 	}
 
+	def capture_option
+		puts 'Pick your poison; rock, paper or scissors'
+		gets
+	end
+
+	def play
+		puts evaluate(capture_option, random_option)
+	end
+
 	def evaluate(option_1, option_2)
 		if draw?(option_1, option_2)
 			"it's a draw"
@@ -14,14 +23,13 @@ class Game
 		end
 	end
 
-	def capture_option
-		puts 'Pick your poison; rock, paper or scissors'
-		gets
-	end
-
 	private
 
 	def draw?(option_1, option_2)
 		option_1 == option_2
+	end
+
+	def random_option
+		WINNING_COMBINATIONS.keys.sample
 	end
 end

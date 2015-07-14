@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry'
 
 describe Game do
 
@@ -9,21 +10,6 @@ describe Game do
 	end
 
 	describe '#evaluate' do
-
-		context 'when the choices are different' do
-			it 'paper beats rock' do
-				expect(game.evaluate('paper', 'rock')).to eq(description)
-			end
-
-			it 'scissors beats paper' do
-				expect(game.evaluate('scissors', 'paper')).to eq(description)
-			end
-
-			it 'rock beats scissors' do
-				expect(game.evaluate('rock', 'scissors')).to eq(description)
-			end
-		end
-
 		context 'when the choices are the same' do
 			it "it's a draw" do
 				expect(game.evaluate('rock', 'rock')).to eq(description)
@@ -47,6 +33,29 @@ describe Game do
 			it 'captures the option supplied' do
 				allow(game).to receive(:puts)
 				expect(game.capture_option).to eq('paper')
+			end
+		end
+	end
+
+	describe '#play' do
+
+		context 'when the user option is supplied we will display a winning message' do
+
+			it 'paper beats rock' do
+				allow(game).to receive(:capture_option).and_return('paper')
+				allow(game).to receive(:random_option).and_return('scissors')
+
+				expect {game.play}.to output(description + "\n").to_stdout
+			end
+
+			it 'scissors beats paper' do
+				allow(game).to receive(:capture_option).and_return('scissors')
+				expect {game.play}.to output(description + "\n").to_stdout
+			end
+
+			it 'rock beats scissors' do
+				allow(game).to receive(:capture_option).and_return('rock')
+				expect {game.play}.to output(description + "\n").to_stdout
 			end
 		end
 	end
