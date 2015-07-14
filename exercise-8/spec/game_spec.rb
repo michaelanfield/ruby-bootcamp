@@ -45,6 +45,7 @@ describe Game do
 			end
 
 			it 'captures the option supplied' do
+				allow(game).to receive(:puts)
 				expect(game.capture_option).to eq('paper')
 			end
 		end
