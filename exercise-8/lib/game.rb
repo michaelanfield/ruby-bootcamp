@@ -14,6 +14,11 @@ class Game
 		end
 	end
 
+	def capture_option
+		puts 'Pick your poison; rock, paper or scissors'
+		gets
+	end
+
 	private
 
 	def draw?(option_1, option_2)
