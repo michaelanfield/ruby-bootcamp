@@ -25,7 +25,6 @@ class Game
 	end
 
 	def capture_user_option
-		#poison_engine.get_poison(input.gets)
 		input.gets
 	end
 
