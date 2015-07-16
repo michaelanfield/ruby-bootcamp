@@ -49,7 +49,7 @@ describe Game do
 				['paper', 'rock']
 			]
 
-			it_behaves_like 'a winning hand', winning_hands
+			it_behaves_like 'a hand is played', winning_hands, Game::MESSAGES[:win]
 		end
 
 		context 'computer wins' do
@@ -59,7 +59,7 @@ describe Game do
 				['rock', 'paper']
 			]
 
-			it_behaves_like 'a losing hand', losing_hands
+			it_behaves_like 'a hand is played', losing_hands, Game::MESSAGES[:lose]
 		end
 
 		context "it's a draw" do
@@ -69,7 +69,7 @@ describe Game do
 				['rock', 'rock']
 			]
 
-			it_behaves_like 'a drawing hand', drawing_hands
+			it_behaves_like 'a hand is played', drawing_hands, Game::MESSAGES[:draw]
 		end
 	end
 end

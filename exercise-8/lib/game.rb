@@ -1,4 +1,11 @@
 class Game
+
+	MESSAGES = {
+		win: '%s totally obliterates %s',
+		lose: '%s is done in by %s',
+		draw: 'You get to live another day!'
+	}
+
 	attr_reader :input, 
 							:output, 
 							:user_option, 
@@ -36,11 +43,11 @@ class Game
 		outcome = poison_engine.get_poison(user_option) <=> poison_engine.get_poison(computer_option)
 		
 		if outcome == 1
-			"#{user_option} beats #{computer_option}" 
+			MESSAGES[:win] % [user_option, computer_option]
 		elsif outcome == -1
-			"#{user_option} loses to #{computer_option}"
+			MESSAGES[:lose] % [user_option, computer_option]
 		else
-			"Oooo, it's a draw"
+			MESSAGES[:draw]
 		end
 	end
 end
