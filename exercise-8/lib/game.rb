@@ -1,3 +1,6 @@
+# Represents a game that requires one type of poison to over power another type
+# of poison. These rules can be supplied when the game is created but will
+# default to rock, paper, scissors.
 class Game
 
 	MESSAGES = {
@@ -6,16 +9,22 @@ class Game
 		draw: 'You get to live another day!'
 	}
 
+	DEFAULT_POISONS = {
+		rock: :scissors, 
+		paper: :rock, 
+		scissors: :paper
+	}
+
 	attr_reader :input, 
 							:output, 
 							:user_option, 
 							:computer_option, 
 							:poison_engine
 
-	def initialize(input_stream = $stdin, output_stream = $stdout)
+	def initialize(input_stream = $stdin, output_stream = $stdout, poisons = DEFAULT_POISONS)
 		@input = input_stream
 		@output = output_stream
-		@poison_engine = PoisonEngine.new()
+		@poison_engine = PoisonEngine.new(poisons)
 	end
 
 	def play
@@ -40,11 +49,10 @@ class Game
 	end
 
 	def decide(user_option, computer_option)
-		outcome = poison_engine.get_poison(user_option) <=> poison_engine.get_poison(computer_option)
-		
-		if outcome == 1
+		case poison_engine.compare(user_option, computer_option)
+		when 1
 			MESSAGES[:win] % [user_option, computer_option]
-		elsif outcome == -1
+		when -1
 			MESSAGES[:lose] % [user_option, computer_option]
 		else
 			MESSAGES[:draw]
@@ -55,14 +63,23 @@ end
 class PoisonEngine
 	attr_reader :poisons
 
-	def initialize(poisons = {rock: :scissors, paper: :rock, scissors: :paper})
-		@poisons = poisons.each { |flavour, over_powers| poisons[flavour] = Poison.new(flavour, over_powers) }
+	def initialize(supplied_poisons)
+		@poisons = {}
+
+		supplied_poisons.each do |flavour, over_powers| 
+			poisons[flavour] = Poison.new(flavour, over_powers) 
+		end
 	end
 
 	def generate_sample_poison
 		poisons.keys.sample.to_s
 	end
 
+	def compare(user_option, computer_option)
+		get_poison(user_option) <=> get_poison(computer_option)
+	end
+
+	private	
 	def get_poison(flavour)
 		poisons[flavour.to_sym] unless !flavour
 	end
