@@ -30,7 +30,7 @@ describe Game do
 
 		it 'captures a valid game option' do
 			allow(game).to receive(:decide)
-			allow(input_stream).to receive(:gets).and_return('paper\n')
+			allow(input_stream).to receive(:gets).and_return('paper')
 
 			game.play
 			expect(game.user_option).to eq('paper')
