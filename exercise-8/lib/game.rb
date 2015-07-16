@@ -37,11 +37,18 @@ class Game
 
 	private 
 	def display_instructions
-		output.puts 'Pick your poison; rock, paper or scissors'
+		output.puts "Pick your poison; #{poison_engine.generate_valid_poison_instructions}"
 	end
 
 	def capture_user_option
-		input.gets
+		user_input = input.gets.chomp 
+
+		if !poison_engine.has_poison?(user_input)
+			output.puts "Come on, play the game '#{user_input}' was not an option. We have generated an option for you."
+			user_input = generate_computer_option
+		end
+
+		user_input
 	end
 
 	def generate_computer_option
@@ -75,8 +82,16 @@ class PoisonEngine
 		poisons.keys.sample.to_s
 	end
 
+	def generate_valid_poison_instructions
+		poisons.keys[0..-2].join(', ') + " or #{poisons.keys[-1]}"
+	end
+
 	def compare(user_option, computer_option)
 		get_poison(user_option) <=> get_poison(computer_option)
+	end
+
+	def has_poison?(user_option)
+		poisons.has_key?(user_option.to_sym)
 	end
 
 	private	

@@ -22,21 +22,34 @@ describe Game do
 
 		it 'displays the instructions' do
 			allow(game).to receive(:decide)
+			allow(game).to receive(:capture_user_option)
 
 			game.play
 			expect(output_stream.string).to start_with(game_instructions)
 		end
 
-		it 'captures a game option' do
+		it 'captures a valid game option' do
 			allow(game).to receive(:decide)
-			allow(input_stream).to receive(:gets).and_return('paper')
+			allow(input_stream).to receive(:gets).and_return('paper\n')
 
 			game.play
 			expect(game.user_option).to eq('paper')
 		end
 
+		it 'rejects invalid game options' do
+			allow(game).to receive(:display_instructions)
+			allow(input_stream).to receive(:gets).and_return('brick')
+			allow(subject).to receive(:generate_computer_option).and_return('paper')
+			allow(game).to receive(:decide)
+
+			game.play
+			expect(game.user_option).to eq('paper')
+			expect(output_stream.string).to include("Come on, play the game 'brick' was not an option. We have generated an option for you.")
+		end
+
 		it 'generates an option for the computer' do
 			allow(game).to receive(:decide)
+			allow(game).to receive(:capture_user_option)
 
 			game.play
 			expect(['rock', 'paper', 'scissors']).to include(game.computer_option) 
