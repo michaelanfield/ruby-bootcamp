@@ -3,59 +3,81 @@ require 'pry'
 
 describe Game do
 
-	subject(:game) { described_class.new }
-
-	let(:description) do |example|
-		example.description
+	it 'uses stdin as the default input reader' do
+		expect(subject.input).to eq($stdin)
 	end
 
-	describe '#evaluate' do
-		context 'when the choices are the same' do
-			it "it's a draw" do
-				expect(game.evaluate('rock', 'rock')).to eq(description)
-			end
-		end
-	end
-
-	describe '#capture_option' do
-
-		before do
-			allow(game).to receive(:gets).and_return('paper')
-		end
-
-		let(:capture_message) { "Pick your poison; rock, paper or scissors\n" }
-
-		context 'when the game is started' do
-			it 'prompts for user with instructions' do
-				expect {game.capture_option}.to output(capture_message).to_stdout
-			end
-
-			it 'captures the option supplied' do
-				allow(game).to receive(:puts)
-				expect(game.capture_option).to eq('paper')
-			end
-		end
-	end
+	it 'uses stdout as the default output renderer' do
+		expect(subject.output).to eq($stdout)
+	end	
 
 	describe '#play' do
+	
+		let(:game_instructions) { "Pick your poison; rock, paper or scissors" }
 
-		context 'when the user option is supplied we will display a winning message' do
+		let(:output_stream) { StringIO.new }
+		let(:input_stream) { StringIO.new }
 
-			it 'paper beats rock' do
-				allow(game).to receive(:capture_option).and_return('paper')
-				allow(game).to receive(:random_option).and_return('scissors')
+		subject(:game) { described_class.new(input_stream, output_stream) }
 
-				expect {game.play}.to output(description + "\n").to_stdout
+		it 'displays the instructions' do
+			allow(game).to receive(:decide)
+
+			game.play
+			expect(output_stream.string).to start_with(game_instructions)
+		end
+
+		it 'captures a game option' do
+			allow(game).to receive(:decide)
+			allow(input_stream).to receive(:gets).and_return('paper')
+
+			game.play
+			expect(game.user_option).to eq('paper')
+		end
+
+		it 'generates an option for the computer' do
+			allow(game).to receive(:decide)
+
+			game.play
+			expect(['rock', 'paper', 'scissors']).to include(game.computer_option) 
+		end
+
+		context 'user wins' do
+
+			winning_hands = [
+				['rock','scissors'],
+				['scissors', 'paper'],
+				['paper', 'rock']
+			]
+
+			winning_hands.each do |options|
+				it "says the winning message - #{options.first} beats #{options.last}" do
+					allow(input_stream).to receive(:gets).and_return(options.first)
+					allow(game).to receive(:generate_computer_option).and_return(options.last)
+					
+					game.play
+					expect(output_stream.string).to include("#{options.first} beats #{options.last}")
+				end
 			end
+		end
 
-			it 'scissors beats paper' do
-				allow(game).to receive(:capture_option).and_return('scissors')
-				expect {game.play}.to output(description + "\n").to_stdout
+		context 'computer wins' do
+			it 'says the losing message' do
+				allow(input_stream).to receive(:gets).and_return('paper')
+				allow(game).to receive(:generate_computer_option).and_return('scissors')
+				
+				game.play
+				expect(output_stream.string).to include('paper loses to scissors')
 			end
+		end
 
-			it 'rock beats scissors' do
-				allow(game).to receive(:capture_option).and_return('rock')
-				expect {game.play}.to output(description + "\n").to_stdout
+		context "it's a draw" do
+			it 'says the draw message' do
+				allow(input_stream).to receive(:gets).and_return('scissors')
+				allow(game).to receive(:generate_computer_option).and_return('scissors')
+				
+				game.play
+				expect(output_stream.string).to include("Oooo, it's a draw")
 			end
 		end
 	end
