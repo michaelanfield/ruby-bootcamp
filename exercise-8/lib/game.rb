@@ -16,10 +16,10 @@ class Game
 	}
 
 	attr_reader :input, 
-							:output, 
-							:user_option, 
-							:computer_option, 
-							:poison_engine
+				:output, 
+				:user_option, 
+				:computer_option, 
+				:poison_engine
 
 	def initialize(input_stream = $stdin, output_stream = $stdout, poisons = DEFAULT_POISONS)
 		@input = input_stream
