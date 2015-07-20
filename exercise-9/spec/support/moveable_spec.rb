@@ -13,14 +13,14 @@ shared_examples_for Exercise9::Moveable do
 	end
 
 	it_behaves_like 'it takes directions', {
-		:move_left => {logitude: 0, lattitude: 1},
-		:move_right => {logitude: 0, lattitude: -1},
-		:move_forwards => {logitude: 1, lattitude: 0},
-		:move_backwards => {logitude: -1, lattitude: 0}
+		:move_left => {longitude: 0, lattitude: 1},
+		:move_right => {longitude: 0, lattitude: -1},
+		:move_forwards => {longitude: 1, lattitude: 0},
+		:move_backwards => {longitude: -1, lattitude: 0}
 	}
 
 	it "does not move :all_over_the_shop" do
 		expect { subject.send(:move, :all_over_the_shop) }.to raise_error(Exercise9::Moveable::InvalidDirectionException)
-		expect(subject.position).to eq({logitude: 0, lattitude: 0})
+		expect(subject.position).to eq({longitude: 0, lattitude: 0})
 	end
 end

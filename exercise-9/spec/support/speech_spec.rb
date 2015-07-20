@@ -23,4 +23,16 @@ shared_examples_for Exercise9::Speech do |words|
 			end
 		end
 	end
+
+	describe '#greeting' do
+		it 'displays a suitable greeting' do
+			expect(subject.send(:greetings)).to include(subject.greeting)
+		end
+	end
+
+	describe '#farewell' do
+		it 'displays a suitable farewell' do
+			expect(subject.send(:goodbyes)).to include(subject.farewell)
+		end
+	end
 end

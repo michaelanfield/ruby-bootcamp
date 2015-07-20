@@ -18,7 +18,7 @@ describe Exercise9::Person do
 
 			subject.tell_me_the_time
 
-			expect($stdout.string).to include("#{greeting_msg}, sorry I'm not a Robot and I don't have a watch".downcase)
+			expect($stdout.string).to include((Exercise9::Person::GREETING_MSG % greeting_msg).downcase)
 		end
 	end
 end

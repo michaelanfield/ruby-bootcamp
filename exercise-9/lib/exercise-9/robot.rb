@@ -5,30 +5,19 @@ module Exercise9
   class Robot
     include Speech, Moveable
 
-    attr_reader :position
+    GREETING_MSG = "%s, the time is %s"
+    FIRE_LASER_MSG = 'firing laser'
 
     def initialize(name)
       @name = name
-
-      @greetings = ['hello', 'good day', "what's up", 'yo', 'hi', 'sup', 'hey']
-      @goodbyes = ['goodbye', 'see you later', 'in a while crocodile', 'l8rs', 'bye for now']
-      @position  = {logitude: 0, lattitude: 0 }
-    end
-
-    def greeting
-      @greetings.sample
-    end
-
-    def farewell
-      @goodbyes.sample
     end
 
     def tell_me_the_time
-      say "#{greeting}, the time is #{Time.now}"
+      say GREETING_MSG % [greeting, Time.now]
     end
 
     def fire_laser
-      shout 'firing laser'
+      shout FIRE_LASER_MSG
     end
   end
 end

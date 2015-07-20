@@ -102,7 +102,7 @@ end
 
 class Poison
 	attr_reader :flavour,
-							:over_powers
+				:over_powers
 
 	def initialize(flavour, over_powers) 
 		@flavour = flavour
