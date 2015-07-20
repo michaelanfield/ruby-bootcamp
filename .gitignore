@@ -6,3 +6,4 @@ bin/
 -rvmrc
 workshops/*/.bundle
 workshops/*/vendor
+exercise-9/coverage

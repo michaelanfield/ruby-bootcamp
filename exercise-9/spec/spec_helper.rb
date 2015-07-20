@@ -1,3 +1,9 @@
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter "/spec/"
+end
+
 Dir["./lib/exercise-9/*.rb"].sort.each { |support_file| require support_file}
 
 Dir["./spec/support/**/*.rb"].sort.each { |support_file| require support_file}
