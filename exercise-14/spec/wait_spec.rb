@@ -2,14 +2,16 @@ require 'pry'
 
 module Wait
 	
-	def until 
+	def self.until 
+		return false unless block_given? 
+
 		outcome = yield
 
 		while !outcome
 			outcome = yield
 		end
 
-		outcome
+		true
 	end
 end
 
@@ -18,13 +20,15 @@ describe Wait do
 	# With an until method 
 	# method should take a block which will execute until it returns true
 
-	subject { Object.new.extend(Wait) }
-
 	describe '#until' do
 		it 'will execute block until it returns true' do
-			until_outcome = subject.until { rand(9) % 2 == 0 }
+			until_outcome = Wait.until { rand(999) % 2 == 0 }
 
 			expect(until_outcome).to be(true)
+		end
+
+		it 'will not execute if no block is given' do
+			expect(Wait.until).to be(false)
 		end
 	end
 end
