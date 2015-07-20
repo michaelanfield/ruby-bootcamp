@@ -3,7 +3,7 @@ require 'pry'
 module Wait
 	
 	def self.until 
-		return false unless block_given? 
+		raise NoBlockGivenError, 'You muppet! Please supply a block to execute.' unless block_given? 
 
 		outcome = yield
 
@@ -13,6 +13,8 @@ module Wait
 
 		true
 	end
+
+	class NoBlockGivenError < StandardError; end
 end
 
 describe Wait do
@@ -28,7 +30,7 @@ describe Wait do
 		end
 
 		it 'will not execute if no block is given' do
-			expect(Wait.until).to be(false)
+			expect{ Wait.until }.to raise_error(Wait::NoBlockGivenError)
 		end
 	end
 end
