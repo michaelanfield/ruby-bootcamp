@@ -3,10 +3,11 @@
 # The method supports the following options to be supplied as a Hash.
 #  * :retry_time - defines the amount of time the process will leave between block exceutions (defaults to 0).
 #  * :expire_after - defines the time out period for the execution of the block (defaults to 5 seconds).
+#  * :debug - outputs the number of attempts if set to true (defaults to false).
 #
 # Example use;
 #
-#  Wait.until(:retry_time => 0.01, :expire_after => 10 ) { rand(999) % 2 == 0 }
+#  Wait.until(:retry_time => 0.01, :expire_after => 10, :debug => true ) { rand(999) % 2 == 0 }
 #
 # throws Wait::NoBlockGivenError if no block is supplied.
 # throws Wait::TimeOutError if the expire_after time is exceeded.
@@ -20,10 +21,11 @@ module Wait
 
 		retry_time = options.delete(:retry_time) || 0
 		expire_after = options.delete(:expire_after) || 5
+		debug = options.delete(:debug) || false
 
 		start_time = Time.now
 
-		outcome = yield
+		outcome, attempt = yield, 1
 
 		while !outcome
 			current_time = Time.now
@@ -33,7 +35,10 @@ module Wait
 			sleep(retry_time)
 
 			outcome = yield
+			attempt += 1
 		end
+
+		p "It took #{attempt} attempt(s)." if debug
 
 		outcome
 	end

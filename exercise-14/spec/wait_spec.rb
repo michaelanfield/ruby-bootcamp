@@ -19,8 +19,16 @@ describe Wait do
 			end
 		end
 
-		it 'will wait 0.01 second between block executions' do
-			expect(Wait.until(:retry_time => 0.01) { rand(999) % 2 == 0 }).to be(true)
+		it 'will wait 0.18 second between block executions' do
+			start_time = Time.now
+
+			count = 0
+
+			Wait.until(:retry_time => 0.18) do
+				(count += 1) == 2
+			end
+
+			expect(Time.now - start_time).to be >= 0.18
 		end
 
 		it 'will expire after 5 seconds by default' do
@@ -36,6 +44,8 @@ describe Wait do
 			end
 
 			expect(Time.now - start_time).to be >= 5
+
+			Timecop.return
 		end
 
 		it 'will expire after 0.01 seconds' do
