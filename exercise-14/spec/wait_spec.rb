@@ -39,7 +39,12 @@ describe Wait do
 		end
 
 		it 'will not execute if no block is given' do
-			expect{ Wait.until }.to raise_error(Wait::NoBlockGivenError)
+			begin
+				Wait.until
+				fail 'Expected a Wait::NoBlockGivenError'
+			rescue Wait::NoBlockGivenError => error
+				expect(error.to_s).to match(/You muppet! Please supply a block to execute./)
+			end
 		end
 
 		it 'will wait 0.01 second between block executions' do
@@ -55,7 +60,7 @@ describe Wait do
 				Wait.until { false }
 				fail 'Expected a Wait::TimeOutError'
 			rescue Wait::TimeOutError => error
-				expect(error.to_s).to include('Timed out waiting, 5 seconds elapsed')
+				expect(error.to_s).to match(/Timed out waiting, 5 seconds elapsed/)
 			end
 
 			expect(Time.now - start_time).to be >= 5
@@ -68,7 +73,7 @@ describe Wait do
 				Wait.until(:expire_after => 0.01) { false }
 				fail 'Expected a Wait::TimeOutError'
 			rescue Wait::TimeOutError => error
-				expect(error.to_s).to include('Timed out waiting, 0.01 seconds elapsed')
+				expect(error.to_s).to match(/Timed out waiting, 0.01 seconds elapsed/)
 			end
 
 			expect(Time.now - start_time).to be >= 0.01
