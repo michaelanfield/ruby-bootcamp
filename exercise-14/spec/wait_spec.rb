@@ -1,4 +1,5 @@
 require 'pry'
+require 'timecop'
 
 module Wait
 	
@@ -22,7 +23,7 @@ module Wait
 			outcome = yield
 		end
 
-		true
+		outcome
 	end
 
 	class NoBlockGivenError < StandardError; end
@@ -47,6 +48,8 @@ describe Wait do
 
 		it 'will expire after 5 seconds by default' do
 			start_time = Time.now
+
+			Timecop.scale(60)
 
 			begin
 				Wait.until { false }
