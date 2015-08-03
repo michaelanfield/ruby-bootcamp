@@ -35,24 +35,21 @@ module Exercise14
 		def register_method_value(method_name, method_value)
 			debug_method_call('register_method_value', method_name, method_value)
 
-			method_override = method_name_overrides[method_name]
+			resolved_method_name = method_name_overrides[method_name] || method_name
+			resolved_method_data_type = method_data_types[method_name] || {}
 
-			if method_override && method_override.is_a?(Array)
+			if resolved_method_name.is_a?(Array)
 
-				method_override.each_with_index do |override, index|
-					body[override] = body[override] || {}
+				resolved_method_name.each_with_index do |override, index|
+					body[override] = body[override] || resolved_method_data_type
 
 					body[override][method_name] = method_value
 				end
 			else
-				method_data_type = method_data_types[method_name]
-
-				if method_data_type && method_data_type.is_a?(Array)
-					body[method_override || method_name] = body[method_override || method_name] || method_data_type
-
-					body[method_override || method_name] << method_value 
+				if resolved_method_data_type.is_a?(Array)
+					body[resolved_method_name] = (body[resolved_method_name] || resolved_method_data_type) << method_value
 				else
-					body[method_override || method_name] = method_value
+					body[resolved_method_name] = method_value
 				end
 			end
 		end
