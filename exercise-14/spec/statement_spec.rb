@@ -18,9 +18,6 @@ module DSLBuilder
 			else
 				method_value = Statement.build(@debug, *args, &block).body
 			end
-			#instance_eval(&block)
-
-			p "Method #{method_name}, with block has a value of: #{method_value}"
 
 			register_method_value(method_name, method_value)
 		else
@@ -40,7 +37,7 @@ module DSLBuilder
 
 		method_override = method_name_overrides[method_name]
 
-		if method_override && ( method_override.is_a? Array )	
+		if method_override && method_override.is_a?(Array)
 
 			method_override.each_with_index do |override, index|
 				body[override] = body[override] || {}
@@ -50,10 +47,7 @@ module DSLBuilder
 		else
 			method_data_type = method_data_types[method_name]
 
-p "Method data type for '#{method_name}' is: #{method_data_type}"
-
 			if method_data_type && method_data_type.is_a?(Array)
-				p 'We have an array'
 				body[method_override || method_name] = body[method_override || method_name] || method_data_type
 
 				body[method_override || method_name] << method_value 
@@ -104,6 +98,7 @@ class Statement
 
 		statement[:statement].tap do |h|
 			h[:generated] = @date || Date.today
+			h[:total] = resolve_statement_total
 		end
 
 		p statement.to_json if @debug
@@ -120,6 +115,16 @@ class Statement
 		end
 
 		@date
+	end
+
+	def resolve_statement_total
+		total = 0
+
+		if body.has_key? :callCharges
+			total = body[:callCharges][:calls].collect { |call| call[:cost] }.reduce(0, :+).round(2)
+		end
+
+		total
 	end
 end
 
@@ -142,12 +147,16 @@ class Call
 end	
 
 class Fixnum
+
+	# Simple returns itself so that we can create a more fluid DSL syntax e.g 2.days
 	def days
 		self
 	end
 end		
 
 class String
+
+	# Takes a snake style string and converts it to camel case e.g. my_string => myString
   def camel_case_lower
     self.split('_').inject([]){ |buffer,e| buffer.push(buffer.empty? ? e : e.capitalize) }.join
   end
@@ -215,7 +224,7 @@ describe Statement do
 			expected_call_1 = { "called" => "07716393769", "date" => "2015-01-26", "duration" => "00:23:03", "cost" => 1.13 }
 			expected_call_2 = { "called" => "07719999999", "date" => "2015-01-28", "duration" => "00:12:23", "cost" => 0.20 }
 
-			statement = Statement.build(true) do
+			statement = Statement.build do
 				call_charges do
 					call '07716393769' do
 						date Date.parse('2015-01-26')
@@ -235,6 +244,27 @@ describe Statement do
 
 			expect(call_1).to eq(expected_call_1)
 			expect(call_2).to eq(expected_call_2)
+		end
+
+		it 'will have a total based on the call charges' do
+			statement = Statement.build(true) do
+				call_charges do
+					call '07716393769' do
+						date Date.parse('2015-01-26')
+			      duration "00:23:03"
+			      cost 1.13
+			    end
+			    call '07719999999' do
+						date Date.parse('2015-01-28')
+			      duration "00:12:23"
+			      cost 0.20
+			    end
+				end
+			end
+
+			total_cost = JSON.parse(statement.to_json)['statement']['total']
+
+			expect(total_cost).to eq 1.33
 		end
 	end
 end
