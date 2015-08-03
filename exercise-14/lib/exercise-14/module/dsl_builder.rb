@@ -13,6 +13,7 @@ module Exercise14
 			method_name = clean_method_name(method)
 
 			if block_given?
+				
 				if !args.empty?
 					method_value = Call.build(args, &block).body
 				else
@@ -57,8 +58,9 @@ module Exercise14
 		def debug_method_call(method, *args)
 			if @debug
 				p "Calling method #{method}"
+
 				args.each_with_index do |arg, index|
-					p "#{index} - #{arg}:#{arg.class}"
+				p "#{index} - #{arg}:#{arg.class}"
 				end
 			end
 		end
