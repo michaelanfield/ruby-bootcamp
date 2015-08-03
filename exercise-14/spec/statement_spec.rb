@@ -1,172 +1,14 @@
 require 'pry'
 require 'json'
 
-module DSLBuilder
-
-	attr_reader :method_name_overrides, 
-							:method_data_types,
-							:body
-
-	def method_missing(method, *args, &block)
-		debug_method_call(method, *args)
-
-		method_name = clean_method_name(method)
-
-		if block_given?
-			if !args.empty?
-				method_value = Call.build(args, &block).body
-			else
-				method_value = Statement.build(@debug, *args, &block).body
-			end
-
-			register_method_value(method_name, method_value)
-		else
-			register_method_value(method_name, args.first)
-		end
-	end
-
-	private 
-	def clean_method_name(method_name)
-		debug_method_call('clean_method_name', method_name)
-
-		method_name.to_s.camel_case_lower.to_sym
-	end
-
-	def register_method_value(method_name, method_value)
-		debug_method_call('register_method_value', method_name, method_value)
-
-		method_override = method_name_overrides[method_name]
-
-		if method_override && method_override.is_a?(Array)
-
-			method_override.each_with_index do |override, index|
-				body[override] = body[override] || {}
-
-				body[override][method_name] = method_value
-			end
-		else
-			method_data_type = method_data_types[method_name]
-
-			if method_data_type && method_data_type.is_a?(Array)
-				body[method_override || method_name] = body[method_override || method_name] || method_data_type
-
-				body[method_override || method_name] << method_value 
-			else
-				body[method_override || method_name] = method_value
-			end
-		end
-	end
-
-	def debug_method_call(method, *args)
-		if @debug
-			p "Calling method #{method}"
-			args.each_with_index do |arg, index|
-				p "#{index} - #{arg}:#{arg.class}"
-			end
-		end
-	end
-end
-
-class Statement
-
-	include DSLBuilder
-
-	def self.build(debug = false, *args, &block)
-		statement = Statement.new(debug)
-		statement.instance_eval(&block) if block_given?
-		statement
-	end
-
-	def initialize(debug)
-		@body = {}
-		@debug = debug
-		@method_name_overrides = {
-			:date => :generated,
-			:from => [:period],
-			:to => [:period],
-			:call => :calls
-		}
-		@method_data_types = {
-			:call => []
-		}
-	end
-
-  def to_json
-  	statement = {
-  		:statement => (body || {})
-		}
-
-		statement[:statement].tap do |h|
-			h[:generated] = @date || Date.today
-			h[:total] = resolve_statement_total
-		end
-
-		p statement.to_json if @debug
-
-  	statement.to_json
-  end
-
-	private 
-	def date(date_in = nil)
-		debug_method_call(:date, date_in)
-
-		if date_in
-			@date = date_in
-		end
-
-		@date
-	end
-
-	def resolve_statement_total
-		total = 0
-
-		if body.has_key? :callCharges
-			total = body[:callCharges][:calls].collect { |call| call[:cost] }.reduce(0, :+).round(2)
-		end
-
-		total
-	end
-end
-
-class Call
-	include DSLBuilder
-
-	def self.build(*args, &block)
-		call = Call.new(args.flatten.first)
-		call.instance_eval(&block) if block_given?
-		call
-	end
-
-	def initialize(phone_number)
-		@body = {}
-		@method_name_overrides = {}
-		@method_data_types = {}
-
-		body[:called] = phone_number
-	end
-end	
-
-class Fixnum
-
-	# Simple returns itself so that we can create a more fluid DSL syntax e.g 2.days
-	def days
-		self
-	end
-end		
-
-class String
-
-	# Takes a snake style string and converts it to camel case e.g. my_string => myString
-  def camel_case_lower
-    self.split('_').inject([]){ |buffer,e| buffer.push(buffer.empty? ? e : e.capitalize) }.join
-  end
-end
+require_relative '../lib/exercise-14/statement'
+require_relative '../lib/exercise-14/call'
 
 describe Statement do
 
 	context '#to_json' do
 
-		it 'will have a statement' do
+		it 'will have a statement with an automatically generated date' do
 			expected_generated_date = Date.today
 
 			statement = Statement.build
@@ -188,7 +30,7 @@ describe Statement do
 			expect(generated_date).to eq(expected_generated_date.to_s)
 		end
 
-		it 'will have a statement with generated and due date' do
+		it 'will have a statement with a given generated and due date' do
 			expected_generated_date = Date.today
 			expected_due_date = expected_generated_date + 30
 
@@ -204,7 +46,7 @@ describe Statement do
 			expect(due_date).to eq(expected_due_date.to_s)
 		end
 
-		it 'will have a period with a from and to' do
+		it 'will have a period that contains from and to dates' do
 			expected_from_date = Date.parse('2015-01-01')
 			expected_to_date = Date.parse('2015-01-31')
 
@@ -247,7 +89,7 @@ describe Statement do
 		end
 
 		it 'will have a total based on the call charges' do
-			statement = Statement.build(true) do
+			statement = Statement.build do
 				call_charges do
 					call '07716393769' do
 						date Date.parse('2015-01-26')
