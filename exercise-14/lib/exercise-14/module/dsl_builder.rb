@@ -1,11 +1,11 @@
 require_relative '../override_string'
 
 module Exercise14
-	module DSLBuilder
+  module DSLBuilder
 
-		attr_reader :method_name_overrides, 
-								:method_data_types,
-								:body
+  attr_reader :method_name_overrides, 
+              :method_data_types,
+              :body
 
 		def method_missing(method, *args, &block)
 			debug_method_call(method, *args)
@@ -13,7 +13,7 @@ module Exercise14
 			method_name = clean_method_name(method)
 
 			if block_given?
-				
+
 				if !args.empty?
 					method_value = Call.build(args, &block).body
 				else
