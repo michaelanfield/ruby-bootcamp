@@ -5,13 +5,11 @@ require_relative '../lib/exercise-14/statement'
 require_relative '../lib/exercise-14/call'
 
 describe Statement do
-
   context '#to_json' do
-
     it 'will have a statement with an automatically generated date' do
       expected_generated_date = Date.today
 
-      statement = Statement.build
+      statement = Statement.new
 
       generated_date = JSON.parse(statement.to_json)['statement']['generated']
 
@@ -21,7 +19,7 @@ describe Statement do
     it 'will have a statement with a given generated date' do
       expected_generated_date = Date.parse('2015-01-01')
 
-      statement = Statement.build do
+      statement = Statement.new do
         date Date.parse('2015-01-01')
       end
 
@@ -34,7 +32,7 @@ describe Statement do
       expected_generated_date = Date.today
       expected_due_date = expected_generated_date + 30
 
-      statement = Statement.build do
+      statement = Statement.new do
         date Date.today
         due date + 30.days
       end
@@ -50,7 +48,7 @@ describe Statement do
       expected_from_date = Date.parse('2015-01-01')
       expected_to_date = Date.parse('2015-01-31')
 
-      statement = Statement.build do
+      statement = Statement.new do
         from Date.parse('2015-01-01')
         to Date.parse('2015-01-31')
       end
@@ -63,19 +61,19 @@ describe Statement do
     end
 
     it 'will have call charges that contain calls' do
-      expected_call_1 = { "called" => "07716393769", "date" => "2015-01-26", "duration" => "00:23:03", "cost" => 1.13 }
-      expected_call_2 = { "called" => "07719999999", "date" => "2015-01-28", "duration" => "00:12:23", "cost" => 0.20 }
+      expected_call_1 = { 'called' => '07716393769', 'date' => '2015-01-26', 'duration' => '00:23:03', 'cost' => 1.13 }
+      expected_call_2 = { 'called' => '07719999999', 'date' => '2015-01-28', 'duration' => '00:12:23', 'cost' => 0.20 }
 
-      statement = Statement.build do
+      statement = Statement.new do
         call_charges do
           call '07716393769' do
             date Date.parse('2015-01-26')
-            duration "00:23:03"
+            duration '00:23:03'
             cost 1.13
           end
           call '07719999999' do
             date Date.parse('2015-01-28')
-            duration "00:12:23"
+            duration '00:12:23'
             cost 0.20
           end
         end
@@ -89,16 +87,16 @@ describe Statement do
     end
 
     it 'will have a total based on the call charges' do
-      statement = Statement.build do
+      statement = Statement.new do
         call_charges do
           call '07716393769' do
             date Date.parse('2015-01-26')
-            duration "00:23:03"
+            duration '00:23:03'
             cost 1.13
           end
           call '07719999999' do
             date Date.parse('2015-01-28')
-            duration "00:12:23"
+            duration '00:12:23'
             cost 0.20
           end
         end

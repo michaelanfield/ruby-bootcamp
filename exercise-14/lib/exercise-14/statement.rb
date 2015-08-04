@@ -1,65 +1,77 @@
-require_relative 'module/dsl_builder'
+require_relative 'module/dynamic_attributes'
 require_relative 'override_fixnum'
 
 require 'json'
 
 class Statement
+  extend Exercise14::DynamicAttributes
 
-  include Exercise14::DSLBuilder
-
-  def self.build(debug = false, *args, &block)
-    statement = Statement.new(debug)
-    statement.instance_eval(&block) if block_given?
-    statement
+  define_attribute :date, 
+                   :due,
+                   :from,
+                   :to
+  
+  def initialize(&block)
+    self.instance_eval(&block) if block_given?
   end
 
-  def initialize(debug)
-    @body = {}
-    @debug = debug
-    @method_name_overrides = {
-      :date => :generated,
-      :from => [:period],
-      :to => [:period],
-      :call => :calls
-    }
-    @method_data_types = {
-      :call => []
-    }
+  def call_charges(&block)
+    if block_given?
+      @call_charges = CallCharges.new(&block)
+    end
+
+    @call_charges
+  end
+
+  def total
+    total_cost = 0
+
+    if call_charges
+      total_cost = call_charges.total_cost
+    end
+    
+    total_cost
   end
 
   def to_json
-    statement = {
-      :statement => (body || {})
-    }
-
-    statement[:statement].tap do |h|
-      h[:generated] = @date || Date.today
-      h[:total] = resolve_statement_total
-    end
-
-    p statement.to_json if @debug
-
-    statement.to_json
+    JSON.generate({
+        statement: {
+          generated: date || Date.today,
+          due: due,
+          period: {
+            from: from,
+            to: to
+          },
+          callCharges: {
+            calls: call_charges.to_json
+          },
+          total: total
+        }
+      })
   end
 
-  private 
-  def date(date_in = nil)
-    debug_method_call(:date, date_in)
+  class CallCharges
+    attr_reader :calls
 
-    if date_in
-      @date = date_in
+    def initialize(&block)
+      @calls = []
+      self.instance_eval(&block) if block_given?
     end
 
-    @date
-  end
+    def call(phone_number, &block)
+      if block_given?
+        calls << Call.new(phone_number, &block)
+      end
 
-  def resolve_statement_total
-    total = 0
-
-    if body.has_key? :callCharges
-      total = body[:callCharges][:calls].collect { |call| call[:cost] }.reduce(0, :+).round(2)
+      calls
     end
 
-    total
+    def to_json
+      @calls.map(&:to_json)
+    end
+
+    def total_cost
+      @calls.map(&:cost).reduce(0, :+).round 2
+    end
   end
 end

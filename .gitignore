@@ -7,3 +7,4 @@ bin/
 workshops/*/.bundle
 workshops/*/vendor
 exercise-9/coverage
+exercise-14/coverage

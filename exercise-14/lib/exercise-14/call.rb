@@ -1,19 +1,25 @@
-require_relative 'module/dsl_builder'
+require_relative 'module/dynamic_attributes'
 
 class Call
-  include Exercise14::DSLBuilder
+  extend Exercise14::DynamicAttributes
 
-  def self.build(*args, &block)
-    call = Call.new(args.flatten.first)
-    call.instance_eval(&block) if block_given?
-    call
+  define_attribute :called,
+                   :date,
+                   :duration,
+                   :cost
+  
+  def initialize(phone_number, &block)
+    called phone_number
+    self.instance_eval(&block) if block_given?
   end
 
-  def initialize(phone_number)
-    @body = {}
-    @method_name_overrides = {}
-    @method_data_types = {}
+  def to_json
+    hash = {}
+    
+    self.instance_variables.each do |var|
+      hash[var.to_s.delete '@'] = self.instance_variable_get(var)
+    end
 
-    body[:called] = phone_number
+    hash
   end
-end 
+end
