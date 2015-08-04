@@ -1,0 +1,19 @@
+begin
+  require 'rspec/core/rake_task'
+  require 'rubocop/rake_task'
+
+  task default: :build
+
+  RSpec::Core::RakeTask.new(:spec) do |task|
+    task.rspec_opts = '--format documentation'
+  end
+
+  RuboCop::RakeTask.new
+
+  desc 'Build the project executing tests and code formatting'
+  task build: [:spec, 'rubocop:auto_correct'] do
+    puts 'The project has been built.'
+  end
+rescue LoadError
+  puts 'rspec is not available'
+end

@@ -4,61 +4,60 @@ require 'timecop'
 require_relative '../lib/wait'
 
 describe Wait do
+  describe '#until' do
+    it 'will execute block until it returns true' do
+      expect(Wait.until { rand(999).even? }).to be(true)
+    end
 
-	describe '#until' do
-		it 'will execute block until it returns true' do
-			expect(Wait.until { rand(999) % 2 == 0 }).to be(true)
-		end
+    it 'will not execute if no block is given' do
+      begin
+        Wait.until
+        fail 'Expected a Wait::NoBlockGivenError'
+   rescue Wait::NoBlockGivenError => error
+     expect(error.to_s).to match(/You muppet! Please supply a block to execute./)
+      end
+    end
 
-		it 'will not execute if no block is given' do
-			begin
-				Wait.until
-				fail 'Expected a Wait::NoBlockGivenError'
-			rescue Wait::NoBlockGivenError => error
-				expect(error.to_s).to match(/You muppet! Please supply a block to execute./)
-			end
-		end
+    it 'will wait 0.18 second between block executions' do
+      start_time = Time.now
 
-		it 'will wait 0.18 second between block executions' do
-			start_time = Time.now
+      count = 0
 
-			count = 0
+      Wait.until(retry_time: 0.18) do
+        (count += 1) == 2
+      end
 
-			Wait.until(:retry_time => 0.18) do
-				(count += 1) == 2
-			end
+      expect(Time.now - start_time).to be >= 0.18
+    end
 
-			expect(Time.now - start_time).to be >= 0.18
-		end
+    it 'will expire after 5 seconds by default' do
+      start_time = Time.now
 
-		it 'will expire after 5 seconds by default' do
-			start_time = Time.now
+      Timecop.scale(60)
 
-			Timecop.scale(60)
+      begin
+        Wait.until { false }
+        fail 'Expected a Wait::TimeOutError'
+   rescue Wait::TimeOutError => error
+     expect(error.to_s).to match(/Timed out waiting, 5 seconds elapsed/)
+      end
 
-			begin
-				Wait.until { false }
-				fail 'Expected a Wait::TimeOutError'
-			rescue Wait::TimeOutError => error
-				expect(error.to_s).to match(/Timed out waiting, 5 seconds elapsed/)
-			end
+      expect(Time.now - start_time).to be >= 5
 
-			expect(Time.now - start_time).to be >= 5
+      Timecop.return
+    end
 
-			Timecop.return
-		end
+    it 'will expire after 0.01 seconds' do
+      start_time = Time.now
 
-		it 'will expire after 0.01 seconds' do
-			start_time = Time.now
+      begin
+        Wait.until(expire_after: 0.01) { false }
+        fail 'Expected a Wait::TimeOutError'
+   rescue Wait::TimeOutError => error
+     expect(error.to_s).to match(/Timed out waiting, 0.01 seconds elapsed/)
+      end
 
-			begin
-				Wait.until(:expire_after => 0.01) { false }
-				fail 'Expected a Wait::TimeOutError'
-			rescue Wait::TimeOutError => error
-				expect(error.to_s).to match(/Timed out waiting, 0.01 seconds elapsed/)
-			end
-
-			expect(Time.now - start_time).to be >= 0.01
-		end
-	end
+      expect(Time.now - start_time).to be >= 0.01
+    end
+  end
 end

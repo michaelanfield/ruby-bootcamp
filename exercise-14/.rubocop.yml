@@ -1,0 +1,7 @@
+Metrics/LineLength:
+  Max: 150
+
+AllCops:
+  DisplayCopNames: true
+  Exclude:
+    - '**/wait.rb'
