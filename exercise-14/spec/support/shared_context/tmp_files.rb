@@ -18,4 +18,4 @@ shared_context 'tmp_files' do
   def create_file(file_path, options = {})
     Pathname.new(FileUtils.touch(@test_dir.join(file_path), options).first)
   end
-end 
+end

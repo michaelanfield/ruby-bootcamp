@@ -2,7 +2,7 @@ require 'rake'
 require 'pry'
 
 require_relative '../../../lib/list_files'
-require_relative '../../support/rake'
+require_relative '../../support/shared_context/rake'
 
 describe 'exercise14:list' do
   include_context 'rake'
