@@ -2,6 +2,8 @@ begin
   require 'rspec/core/rake_task'
   require 'rubocop/rake_task'
 
+  require_relative 'lib/list_files'
+
   task default: :build
 
   RSpec::Core::RakeTask.new(:spec) do |task|
@@ -13,6 +15,11 @@ begin
   desc 'Build the project executing tests and code formatting'
   task build: [:spec, 'rubocop:auto_correct'] do
     puts 'The project has been built.'
+  end
+
+  desc 'Lists a directories contents and filters the output to a given pattern.'
+  task :list do
+    ListFiles.list('boo', '*.spec')
   end
 rescue LoadError
   puts 'rspec is not available'
