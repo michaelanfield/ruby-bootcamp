@@ -1,7 +1,6 @@
 
 # Checks to make sure included file names are listed in the output and excluded file names are not.
 shared_examples 'list file names' do |pattern: nil, include_files: [], exclude_files: []|
-
   include_files.each do |file_name|
     it "will include #{file_name} in the output" do
       if pattern
