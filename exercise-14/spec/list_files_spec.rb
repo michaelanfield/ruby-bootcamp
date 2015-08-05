@@ -65,6 +65,18 @@ describe ListFiles do
                         '.\n', '..\n'
                       ]
     end
+
+    context '*file2.* files within a directory are listed' do
+      it_behaves_like 'list file names', 
+                      pattern: '*file2.*',
+                      include_files: ['csv_file2.csv', 'test_file2.txt'],
+                      exclude_files: [
+                        'csv_file1.csv', 'csv_file3.csv', 'csv_file4.csv', 'csv_file5.csv',
+                        'test_file1.txt', 'test_file3.txt', 
+                        'image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg', 'image5.jpg',
+                        '.\n', '..\n'
+                      ]
+    end
   end
 
   private
