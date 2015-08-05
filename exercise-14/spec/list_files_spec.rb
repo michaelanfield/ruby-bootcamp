@@ -1,4 +1,3 @@
-require 'rake'
 require 'fileutils'
 require 'pathname'
 require 'tmpdir'
