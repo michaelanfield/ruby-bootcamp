@@ -6,14 +6,17 @@
 #
 # Will execute the list task within the exercise14 namespace in a file called
 # exercise14.rake located in lib/tasks.
-shared_context 'rake' do
-  let(:rake)      { Rake::Application.new }
+shared_context :rake do
   let(:task_name) { self.class.top_level_description }
   let(:task_path) { "lib/tasks/#{task_name.split(':').first}" }
-  subject         { rake[task_name] }
 
-  before do
-    Rake.application = rake
-    Rake.application.rake_require(task_path, [Rake.original_dir.to_s], [])
+  let(:rake_app)  do
+    Rake::Application.new.tap do |rake_app|
+      allow(Rake).to receive(:application).and_return(rake_app)
+
+      rake_app.rake_require(task_path, [Rake.original_dir.to_s], [])
+    end
   end
+
+  subject         { rake_app[task_name] }
 end

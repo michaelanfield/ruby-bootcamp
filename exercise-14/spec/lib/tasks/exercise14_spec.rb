@@ -5,7 +5,7 @@ require_relative '../../../lib/list_files'
 require_relative '../../support/shared_context/rake'
 
 describe 'exercise14:list' do
-  include_context 'rake'
+  include_context :rake
 
   let(:directory) { 'tmp/test' }
 
