@@ -6,6 +6,7 @@ end
 
 # 3rd party libraries
 require 'rack/test'
+require 'pry'
 
 # Project dependencies
 require './lib/homepage'
