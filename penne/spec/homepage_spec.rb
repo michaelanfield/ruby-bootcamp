@@ -1,5 +1,13 @@
 require 'spec_helper'
 
+shared_examples 'a URL language parser' do |url, language_code|
+  it "extracts #{language_code} from #{url}" do
+    get url
+
+    expect(subject.translate_to).to eq language_code
+  end
+end
+
 describe HomePage do
   let(:app) { subject }
   let(:messages) do
@@ -7,6 +15,10 @@ describe HomePage do
       default: 'Welcome to the next best thing!',
       german: 'Willkommen auf die nächste beste Sache !'
     }
+  end
+
+  before do
+    allow(subject.translation_service).to receive(:language_valid?).and_return true
   end
 
   it 'should have a successful response with an english message' do
@@ -17,18 +29,16 @@ describe HomePage do
   end
 
   it 'should call through to a translation service with a message' do
-    allow(subject.translation_service).to receive(:translate).with(messages[:default], nil).and_return('anything')
+    expect(subject.translation_service).to receive(:translate).with(messages[:default], nil).and_return('anything')
 
     get '/'
 
     expect(last_response).to be_ok
   end
 
-  it 'should take home.de and set the translate language to de' do
-    get '/home.de'
-
-    expect(subject.translate_to).to eq 'de'
-  end
+  it_behaves_like 'a URL language parser', '/home.de', 'de'
+  it_behaves_like 'a URL language parser', '/hello/home.zh', 'zh'
+  it_behaves_like 'a URL language parser', '/home.page.en', 'en'
 
   skip 'should have a successful response with a message in german' do
     get '/home.de'

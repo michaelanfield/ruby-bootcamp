@@ -1,10 +1,3 @@
-# Provides a service to translate a given message to a given language.
-class TranslationService
-  def translate(message, _language = 'en')
-    message
-  end
-end
-
 # Represents the home page of the penne application.
 class HomePage
   attr_reader :translation_service, :translate_to
