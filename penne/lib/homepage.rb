@@ -1,3 +1,5 @@
+require_relative 'translation_service'
+
 # Represents the home page of the penne application.
 class HomePage
   attr_reader :translation_service, :translate_to
@@ -9,7 +11,7 @@ class HomePage
   def call(app)
     @translate_to = extract_translate_to_from_path_info(app['PATH_INFO'])
 
-    [200, {}, translation_service.translate('Welcome to the next best thing!', translate_to)]
+    [200, { 'Content-Type' => 'text/plain' }, [translation_service.translate('Welcome to the next best thing!', translate_to)]]
   end
 
   private

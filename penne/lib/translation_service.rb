@@ -25,7 +25,7 @@ class TranslationService
   def language_valid?(language_code)
     _from_languages, to_languages = translator.supported_languages
 
-    to_languages.select { |lang| lang.code == language_code }.nil?
+    !to_languages.select! { |lang| lang.code == language_code }.empty?
   end
 
   # Describes an error encountered because a language supplied is not supported.

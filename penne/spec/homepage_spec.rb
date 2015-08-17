@@ -32,7 +32,9 @@ describe HomePage do
   it_behaves_like 'a URL language parser', '/hello/home.zh', 'zh'
   it_behaves_like 'a URL language parser', '/home.page.en', 'en'
 
-  skip 'should have a successful response with a message in german' do
+  it 'should have a successful response with a message in german' do
+    expect(subject.translation_service).to receive(:translate).with(messages[:default], 'de').and_return(messages[:german])
+
     get '/home.de'
 
     expect(last_response).to be_ok
