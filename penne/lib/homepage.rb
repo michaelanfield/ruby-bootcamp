@@ -1,22 +1,33 @@
 require_relative 'translation_service'
 
-# Represents the home page of the penne application.
-class HomePage
-  attr_reader :translation_service, :translate_to
+# Handles the translation of page text for display in a browser.
+class Penne
+  attr_reader :translation_service, :translate_to, :path
 
-  def initialize(translation_service = TranslationService.new)
-    @translation_service = translation_service
+  def initialize
+    @translation_service = TranslationService.new
   end
 
   def call(app)
     @translate_to = extract_translate_to_from_path_info(app['PATH_INFO'])
 
-    [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [translation_service.translate('Welcome to the next best thing!', translate_to)]]
+    [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [translation_service.translate(body, translate_to)]]
+  end
+
+  def body
+    fail NotImplementedError, 'You must implement the body'
   end
 
   private
 
   def extract_translate_to_from_path_info(path_info)
     path_info[/[^.]*$/] if path_info.include?('.')
+  end
+end
+
+# Represents the home page of the penne application.
+class HomePage < Penne
+  def body
+    'Welcome to the next best thing!'
   end
 end
