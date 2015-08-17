@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rack', '1.6.4'
 gem 'google-translate', '1.1.2'
+gem 'shotgun', '0.9.1'
 
 group :test do
   gem 'pry', '~>0.10.1'
