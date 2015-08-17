@@ -11,7 +11,7 @@ class HomePage
   def call(app)
     @translate_to = extract_translate_to_from_path_info(app['PATH_INFO'])
 
-    [200, { 'Content-Type' => 'text/plain' }, [translation_service.translate('Welcome to the next best thing!', translate_to)]]
+    [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [translation_service.translate('Welcome to the next best thing!', translate_to)]]
   end
 
   private
