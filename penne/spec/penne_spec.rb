@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe HomePage do
+describe Penne do
   let(:app) { subject }
   let(:messages) do
     {
@@ -11,6 +11,7 @@ describe HomePage do
 
   before do
     allow(subject.translation_service).to receive(:language_valid?).and_return true
+    allow(subject).to receive(:body).and_return messages[:default]
   end
 
   it 'should have a successful response with an english message' do
@@ -39,5 +40,9 @@ describe HomePage do
 
     expect(last_response).to be_ok
     expect(last_response.body).to include messages[:german]
+  end
+
+  it 'will throw an exception if body is called as it must be implemented' do
+    expect { Penne.new.body }.to raise_error NotImplementedError
   end
 end
