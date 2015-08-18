@@ -7,7 +7,6 @@ describe PastaApp do
     pages = subject.class.pages
 
     expect(pages.size).to eq 2
-    expect(pages).to include '/home'
-    expect(pages).to include '/info'
+    expect(pages).to include '/home', '/info'
   end
 end

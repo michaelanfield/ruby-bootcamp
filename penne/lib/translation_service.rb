@@ -1,6 +1,9 @@
 require 'google_translate'
 require 'google_translate/result_parser'
 
+require 'nokogiri'
+require 'pry'
+
 # Provides a service to translate a given message to a given language.
 class TranslationService
   FROM_LANG = 'en'
@@ -11,13 +14,16 @@ class TranslationService
     @translator = translator
   end
 
-  def translate(message, language = nil)
-    return message unless language
+  def translate_page(page, language = nil)
+    html = Nokogiri::HTML(page) do |config|
+      config.noblanks
+    end
 
-    fail UnsupportedLanguageError, "Sorry, #{language} is not supported." unless language_valid? language
+    html.search('//text()').each do |text|
+      text.content = translate text.content, language
+    end
 
-    translation = translator.translate(FROM_LANG, language, message)
-    ResultParser.new(translation).translation
+    html.to_s
   end
 
   private
@@ -26,6 +32,15 @@ class TranslationService
     _from_languages, to_languages = translator.supported_languages
 
     !to_languages.select! { |lang| lang.code == language_code }.empty?
+  end
+
+  def translate(message, language = nil)
+    return message unless language
+
+    fail UnsupportedLanguageError, "Sorry, #{language} is not supported." unless language_valid? language
+
+    translation = translator.translate(FROM_LANG, language, message)
+    ResultParser.new(translation).translation
   end
 
   # Describes an error encountered because a language supplied is not supported.

@@ -10,7 +10,7 @@ describe TranslationService do
   it 'should return the message if no language to is provided' do
     expect(subject.translator).not_to receive(:translate)
 
-    expect(subject.translate message).to eq message
+    expect(subject.send(:translate, message)).to eq message
   end
 
   it 'should use en as the default language from' do
@@ -19,11 +19,20 @@ describe TranslationService do
     expect(subject.translator).to receive(:translate).with('en', 'de', anything).and_return([[[expected_translated_message]]])
     expect(subject).to receive(:language_valid?).with('de').and_return true
 
-    translated_message = subject.translate 'my string', 'de'
+    translated_message = subject.send :translate, 'my string', 'de'
     expect(translated_message).to eq expected_translated_message
   end
 
   it 'should only allow supported languages' do
-    expect { subject.translate message, 'XX' }.to raise_error TranslationService::UnsupportedLanguageError
+    expect { subject.send(:translate, message, 'XX') }.to raise_error TranslationService::UnsupportedLanguageError
+  end
+
+  it 'will translate a page of HTML only sending the text for translation' do
+    text = 'This is just some text mate'
+    html = "<html><body><p>#{text}</p></body></html>"
+
+    expect(subject).to receive(:translate).with(text, nil).once
+
+    subject.translate_page html
   end
 end

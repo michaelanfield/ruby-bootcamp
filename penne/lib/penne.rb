@@ -1,5 +1,7 @@
 require_relative 'translation_service'
 
+require 'slim'
+
 # Handles the translation of page text for display in a browser.
 class Penne
   attr_reader :translation_service
@@ -14,7 +16,7 @@ class Penne
     if path_valid? path_reference
       page_content = get_page_content_for path_reference
 
-      [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [translation_service.translate(page_content, translate_to)]]
+      [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [translation_service.translate_page(page_content, translate_to)]]
     else
       [404, { 'Content-Type' => 'text/html; charset=utf-8' }, ['Page not found']]
     end
@@ -29,6 +31,10 @@ class Penne
 
     def pages
       @pages ||= {}
+    end
+
+    def view(template)
+      Slim::Template.new("views/#{template}.html.slim").render self
     end
   end
 
