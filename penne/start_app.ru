@@ -1,3 +1,3 @@
-require './lib/homepage'
+require './lib/pasta_app'
 
-run HomePage.new
+run PastaApp.new

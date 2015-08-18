@@ -2,25 +2,51 @@ require_relative 'translation_service'
 
 # Handles the translation of page text for display in a browser.
 class Penne
-  attr_reader :translation_service, :translate_to, :path
+  attr_reader :translation_service
 
   def initialize
     @translation_service = TranslationService.new
   end
 
   def call(app)
-    @translate_to = extract_translate_to_from_path_info(app['PATH_INFO'])
+    path_reference, translate_to = extract_path_and_language_from app['PATH_INFO']
 
-    [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [translation_service.translate(body, translate_to)]]
-  end
+    if path_valid? path_reference
+      page_content = get_page_content_for path_reference
 
-  def body
-    fail NotImplementedError, 'You must implement the body'
+      [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [translation_service.translate(page_content, translate_to)]]
+    else
+      [404, { 'Content-Type' => 'text/html; charset=utf-8' }, ['Page not found']]
+    end
   end
 
   private
 
-  def extract_translate_to_from_path_info(path_info)
-    path_info[/[^.]*$/] if path_info.include?('.')
+  class << self
+    def page(path_reference, &block)
+      pages[path_reference] = instance_eval(&block) if block_given?
+    end
+
+    def pages
+      @pages ||= {}
+    end
+  end
+
+  def extract_path_and_language_from(path_info)
+    path_and_language = [path_info]
+
+    if (matches = path_info.match(%r{^(?<path>[\w\.\/]+)\.(?<ext>\w+)$}))
+      path_and_language = matches.captures
+    end
+
+    path_and_language
+  end
+
+  def get_page_content_for(path_reference)
+    self.class.pages[path_reference]
+  end
+
+  def path_valid?(path_reference)
+    self.class.pages.key? path_reference
   end
 end
