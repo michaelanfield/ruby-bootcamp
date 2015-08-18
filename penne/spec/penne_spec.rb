@@ -27,7 +27,7 @@ describe Penne do
   end
 
   it 'should call through to a translation service with a message' do
-    expect(subject.translation_service).to receive(:translate).with(messages[:default], nil).and_return('anything')
+    expect(subject.translation_service).to receive(:translate_page).with(messages[:default], nil).and_return('anything')
 
     get '/home'
 
@@ -39,7 +39,7 @@ describe Penne do
   it_behaves_like 'a URL language and page reference parser', '/home.page.en', 'en', '/home.page'
 
   it 'should have a successful response with a message in german' do
-    expect(subject.translation_service).to receive(:translate).with(messages[:default], 'de').and_return(messages[:german])
+    expect(subject.translation_service).to receive(:translate_page).with(messages[:default], 'de').and_return(messages[:german])
 
     get '/home.de'
 

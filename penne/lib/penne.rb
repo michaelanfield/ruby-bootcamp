@@ -39,7 +39,7 @@ class Penne
   end
 
   def extract_path_and_language_from(path_info)
-    path_and_language = [path_info]
+    path_and_language = [path_info, nil]
 
     if (matches = path_info.match(%r{^(?<path>[\w\.\/]+)\.(?<ext>\w+)$}))
       path_and_language = matches.captures

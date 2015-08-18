@@ -10,7 +10,7 @@ describe TranslationService do
   it 'should return the message if no language to is provided' do
     expect(subject.translator).not_to receive(:translate)
 
-    expect(subject.send(:translate, message)).to eq message
+    expect(subject.send(:translate_page, message)).to eq message
   end
 
   it 'should use en as the default language from' do
@@ -31,8 +31,11 @@ describe TranslationService do
     text = 'This is just some text mate'
     html = "<html><body><p>#{text}</p></body></html>"
 
-    expect(subject).to receive(:translate).with(text, nil).once
+    expect(subject).to receive(:translate).with(text, 'de').once
 
-    subject.translate_page html
+    subject.translate_page html, 'de'
+  end
+
+  it 'will retrieve the page from the cache if its been previously translated' do
   end
 end
