@@ -53,13 +53,4 @@ describe Penne do
     expect(last_response.status).to eq 404
     expect(last_response.body).to eq 'Page not found'
   end
-
-  it 'will retrieve a page from the cache' do
-    expect(subject.translation_service.page_cache).to receive(:add_to_cache).once.and_call_original
-    expect(subject.translation_service.page_cache).to receive(:get).twice.and_call_original
-
-    get '/home.de'
-    get '/home.de'
-    get '/home.de'
-  end
 end
