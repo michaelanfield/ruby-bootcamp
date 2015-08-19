@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry'
 
 describe TranslationService do
   let(:message) { 'my awesome message' }
@@ -37,5 +38,13 @@ describe TranslationService do
   end
 
   it 'will retrieve the page from the cache if its been previously translated' do
+    html = '<html><body><p>Anything</p></body></html>'
+
+    expect(subject.page_cache).to receive(:add_to_cache).once.and_call_original
+    expect(subject.page_cache).to receive(:get).twice.and_call_original
+
+    subject.translate_page html, 'en'
+    subject.translate_page html, 'en'
+    subject.translate_page html, 'en'
   end
 end

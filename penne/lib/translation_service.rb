@@ -2,14 +2,16 @@ require 'google_translate'
 require 'google_translate/result_parser'
 require 'nokogiri'
 
+require_relative 'hash_cache'
+
 # Provides a service to translate a given message to a given language.
 class TranslationService
   FROM_LANG = 'en'
 
   attr_reader :page_cache, :translator
 
-  def initialize(translator = GoogleTranslate.new)
-    @page_cache = {}
+  def initialize(translator: GoogleTranslate.new, page_cache: HashCache.new)
+    @page_cache = page_cache
     @translator = translator
   end
 
@@ -18,7 +20,11 @@ class TranslationService
 
     key = build_page_cache_key cache_name, language
 
-    page_cache[key] = translate_page_text page, language unless page_cache[key]
+    if page_cache.exists? key
+      page_cache.get key
+    else
+      page_cache.add_to_cache key, translate_page_text(page, language)
+    end
   end
 
   private
