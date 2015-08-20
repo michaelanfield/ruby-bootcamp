@@ -14,6 +14,6 @@ describe 'login.slim' do
   it_behaves_like :a_page_with_inputs, 'username', 'password'
 
   it 'will have a login button' do
-    expect(page).to include "<button type=\"submit\" value=\"Login\""
+    expect(page).to include "<button type=\"submit\"", 'Login'
   end
 end

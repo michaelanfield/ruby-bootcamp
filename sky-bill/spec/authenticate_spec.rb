@@ -13,5 +13,3 @@ describe Authenticate do
     expect(last_response.body).to include 'Sign in'
   end
 end
-
-# Test the template in isolation to ensure it has the necessary inputs and button
