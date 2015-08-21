@@ -1,5 +1,7 @@
 shared_context :capybara_test do
-  Capybara.app = described_class
+  before do
+    Capybara.app = described_class
 
-  Sinatra::Base.set :root, "#{__dir__}/../.."
+    Sinatra::Base.set :root, "#{__dir__}/../.."
+  end
 end

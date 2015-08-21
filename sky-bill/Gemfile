@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rack', '1.6.4'
 gem 'sinatra', '1.4.6'
+gem 'sinatra-contrib', '1.4.6'
 gem 'slim', '3.0.6'
 
 group :development do
@@ -11,5 +12,5 @@ group :development do
   gem 'rubocop', '~>0.33.0'
   gem 'simplecov', '~>0.10.0'
   gem 'shotgun', '~>0.9.1'
-  gem 'capybara', '~>2.2.4'
+  gem 'capybara', '~>2.4.4'
 end
