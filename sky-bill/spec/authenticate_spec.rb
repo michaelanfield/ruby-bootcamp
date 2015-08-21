@@ -1,15 +1,32 @@
 require 'spec_helper'
 
-describe Authenticate do
-  include_context :rack_test
+feature Authenticate do
+  include_context :capybara_test
 
-  it 'responds to get' do
-    expect(self.respond_to? :get).to be true
+  scenario 'Login with valid credentials' do
+    visit '/'
+
+    within '#container form.login' do
+      fill_in 'username', with: 'me@you.com'
+      fill_in 'password', with: 'p455w0rd'
+    end
+
+    click_button 'Login'
+
+    expect(page).to have_content 'Your Bill'
   end
 
-  it 'navigates to the login page' do
-    get '/'
+  scenario 'Login with invalid credentials' do
+    visit '/'
 
-    expect(last_response.body).to include 'Sign in'
+    within '#container form.login' do
+      fill_in 'username', with: 'me@you.com'
+      fill_in 'password', with: 'incorrect'
+    end
+
+    click_button 'Login'
+
+    expect(page).to have_css 'input[name=username]'
+    expect(page).to have_content 'Login to your account'
   end
 end

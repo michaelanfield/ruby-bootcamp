@@ -3,7 +3,9 @@ html
     title Sign in
   body
     div#container
-      form
+      h2 Login to your account
+      
+      form.login method='post' action='/login'
         label Username
         input type='text' name='username'
         label Password

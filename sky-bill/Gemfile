@@ -11,4 +11,5 @@ group :development do
   gem 'rubocop', '~>0.33.0'
   gem 'simplecov', '~>0.10.0'
   gem 'shotgun', '~>0.9.1'
+  gem 'capybara', '~>2.2.4'
 end
