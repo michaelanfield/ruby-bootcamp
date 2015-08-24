@@ -17,8 +17,7 @@ feature Authenticate do
 
     login(password: 'incorrect')
 
-    expect(page).to have_css 'input[name=username]'
-    expect(page).to have_content 'Login to your account'
+    expect_to_be_on_login_page
   end
 
   scenario 'Access to bill directly should redirect to login' do
