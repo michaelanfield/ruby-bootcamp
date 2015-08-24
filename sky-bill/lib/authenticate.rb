@@ -30,7 +30,7 @@ class Authenticate < Sinatra::Base
     end
   end
 
-  post '/logout' do
+  get '/logout' do
     cookies.clear
     redirect '/'
   end

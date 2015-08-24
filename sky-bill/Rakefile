@@ -16,7 +16,7 @@ begin
   task build: [:spec, 'rubocop:auto_correct']
 
   desc 'Runs unit, integration and feature tests'
-  task all_tests: [:spec, :features]
+  task test_all: [:spec, :features]
 rescue LoadError
   puts 'rspec is not available'
 end
