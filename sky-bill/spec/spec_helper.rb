@@ -1,9 +1,5 @@
 require 'simplecov'
 
-SimpleCov.start do
-  add_filter '/spec/'
-end
-
 # 3rd party libraries
 require 'rack/test'
 require 'pry'

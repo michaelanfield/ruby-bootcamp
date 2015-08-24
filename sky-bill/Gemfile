@@ -7,10 +7,14 @@ gem 'slim', '3.0.6'
 
 group :development do
   gem 'pry', '~>0.10.1'
-  gem 'rack-test', '~>0.6.3'
+  gem 'rack-test', '~>0.6.3', require: 'rack/test'
   gem 'rspec', '~>3.3.0'
   gem 'rubocop', '~>0.33.0'
   gem 'simplecov', '~>0.10.0'
   gem 'shotgun', '~>0.9.1'
   gem 'capybara', '~>2.4.4'
+  gem 'cucumber', '~>2.0.2'
+  gem 'selenium-webdriver', '~>2.47.1'
+  gem 'wait', '~>0.5.2'
+  gem 'thin', '~>1.6.3'
 end

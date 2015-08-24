@@ -14,11 +14,15 @@ class Authenticate < Sinatra::Base
     slim :bill
   end
 
+  get '/login' do
+    redirect '/'
+  end
+
   post '/login' do
     username = params[:username]
     password = params[:password]
 
-    if username == 'me@you.com' && password == 'p455w0rd'
+    if 'me@you.com' == username && 'p455w0rd' == password
       cookies[:skybill_auth] = true
       redirect '/bill'
     else
