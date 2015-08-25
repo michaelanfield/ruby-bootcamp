@@ -6,7 +6,7 @@ describe 'login.slim' do
   shared_examples :a_page_with_inputs do |*field_names|
     field_names.each do |field_name|
       it "for #{field_name}" do
-        expect(page).to include "<label>#{field_name.capitalize}", "<input name=\"#{field_name}\""
+        expect(page.has_field? field_name).to be true
       end
     end
   end
@@ -14,6 +14,6 @@ describe 'login.slim' do
   it_behaves_like :a_page_with_inputs, 'username', 'password'
 
   it 'will have a login button' do
-    expect(page).to include "<button type=\"submit\"", 'Login'
+    expect(page.has_button? 'Login').to be true
   end
 end
