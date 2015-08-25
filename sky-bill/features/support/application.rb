@@ -1,6 +1,5 @@
 World(Module.new do
-
-  def goto page_path
+  def goto(page_path)
     visit "#{application_url}#{page_path}"
   end
 
@@ -12,7 +11,7 @@ World(Module.new do
     click_button 'Login'
   end
 
-  private 
+        private
 
   def application_url
     "http://localhost:#{ENV['port'] || 9393}/"

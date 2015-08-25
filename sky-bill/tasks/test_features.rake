@@ -1,14 +1,14 @@
-#require 'rubygems'
+# require 'rubygems'
 
 begin
   require 'cucumber'
   require 'cucumber/rake/task'
 
   desc 'Run the feature tests with cucumber'
-  task :features => 'application:start' do
+  task features: 'application:start' do
     Cucumber::Rake::Task.new(:cucumber) do |t|
-      t.cucumber_opts = ["--format pretty", 
-                         "--format html -o coverage/features.html"]
+      t.cucumber_opts = ['--format pretty',
+                         '--format html -o coverage/features.html']
     end
 
     Rake::Task[:cucumber].invoke

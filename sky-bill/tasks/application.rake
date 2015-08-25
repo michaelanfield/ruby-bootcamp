@@ -17,13 +17,12 @@ module Application
 end
 
 namespace :application do
-
   desc 'Start your application'
   task :start do
     Application.start
 
     ENV['port'] = Application.port.to_s
-    
+
     at_exit do
       Application.stop
     end

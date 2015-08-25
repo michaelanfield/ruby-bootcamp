@@ -20,6 +20,6 @@ When(/^we navigate to the (.*) page$/) do |page_name|
   goto page_name
 end
 
-When(/^we click the (.*) (.*)$/) do |click_target, target_type|
+When(/^we click the (.*) (.*)$/) do |click_target, _target_type|
   click_button click_target
 end

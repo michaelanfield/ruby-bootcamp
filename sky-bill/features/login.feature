@@ -24,12 +24,7 @@ Feature: Login to view your bill
       | no@access.com | p455w0rd  |
       | no@access.com | incorrect |
 
-  Scenario: Access to bill directly should redirect to login
+  Scenario: Unauthorised direct access
     Given we are not logged in
     When we navigate to the bill page
-    Then we will be on the login page
-
-  Scenario: Once logged in you should be able to logout
-    Given we are logged in
-    When we click the Logout button
     Then we will be on the login page

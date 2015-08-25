@@ -1,9 +1,6 @@
 require 'simplecov'
 
-# 3rd party libraries
-require 'rack/test'
-require 'pry'
-require 'capybara/rspec'
+SimpleCov.command_name 'test:specs'
 
 # Project dependencies
 Dir.glob('./lib/*.rb').each { |project_file| require project_file }

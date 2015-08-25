@@ -1,6 +1,4 @@
-require 'simplecov'
-
-require_relative '../../spec/spec_helper'
+Bundler.require :development
 
 Capybara.default_driver = :selenium
 Capybara.default_selector = :css
@@ -13,4 +11,4 @@ module Helpers
   end
 end
 
-World(Capybara::DSL, Helpers)
+World(Helpers)

@@ -1,3 +1,7 @@
+require 'simplecov'
+
+SimpleCov.command_name 'test:features'
+
 require './lib/authenticate'
 
 # Sets the Sinatra base directory to be sky-bill. This means it will look for templates in
