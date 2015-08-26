@@ -17,5 +17,6 @@ group :development do
   gem 'selenium-webdriver', '~>2.47.1'
   gem 'wait', '~>0.5.2'
   gem 'thin', '~>1.6.3'
-  gem 'page_magic', '~>0.10.0'
+  gem 'page_magic', '1.0.0.alpha4'
+  gem 'watir-webdriver', '~>0.8.0'
 end

@@ -1,15 +1,13 @@
 Given(/^we are on the (\w+) page$/) do |page_name|
   goto page_name
 
-  expect(page).to have_css 'input[name=username]'
-  expect(page).to have_css 'input[name=password]'
-  expect(page).to have_css 'button[type=submit]'
-
-  expect(page).to have_content 'Login to your account'
+  expect(page.arrived).to be true
 end
 
 Given(/^we are logged in$/) do
-  login
+  goto 'login'
+  
+  page.login
 end
 
 Given(/^we are not logged in$/) do
@@ -17,9 +15,9 @@ Given(/^we are not logged in$/) do
 end
 
 When(/^we navigate to the (.*) page$/) do |page_name|
-  goto page_name
+  goto page_name, page: eval("#{page_name.capitalize}Page")
 end
 
-When(/^we click the (.*) (.*)$/) do |click_target, _target_type|
-  click_button click_target
+When(/^we click the (.*) (.*)$/) do |click_target, target_type|
+  page.send("#{click_target}_#{target_type}").click
 end

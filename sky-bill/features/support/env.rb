@@ -1,3 +1,6 @@
+$LOAD_PATH.unshift("#{__dir__}/../../spec")
+require 'support/views'
+
 Bundler.require :development
 
 Capybara.default_driver = :selenium

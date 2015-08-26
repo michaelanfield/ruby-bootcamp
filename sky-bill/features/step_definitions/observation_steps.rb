@@ -1,12 +1,5 @@
-Then(/^we will be on the bill page$/) do
-  expect(page).to have_content 'Your Bill'
-  expect(page).to have_button 'Logout'
+Then(/^we will be on the (.*) page$/) do |page_name|
+  expect(page.arrived).to be true
 end
 
-Then(/^we will be on the login page$/) do
-  expect(page).to have_css 'input[name=username]'
-  expect(page).to have_css 'input[name=password]'
-  expect(page).to have_css 'button[type=submit]'
 
-  expect(page).to have_content 'Login to your account'
-end

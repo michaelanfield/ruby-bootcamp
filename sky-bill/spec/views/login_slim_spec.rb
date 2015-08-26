@@ -6,7 +6,7 @@ describe 'login.slim' do
   shared_examples :a_page_with_inputs do |*field_names|
     field_names.each do |field_name|
       it "for #{field_name}" do
-        expect(page.has_field? field_name).to be true
+        expect(page.send(field_name)).to be_visible
       end
     end
   end
@@ -14,6 +14,6 @@ describe 'login.slim' do
   it_behaves_like :a_page_with_inputs, 'username', 'password'
 
   it 'will have a login button' do
-    expect(page.has_button? 'Login').to be true
+    expect(page.login_button).to be_visible
   end
 end
