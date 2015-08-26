@@ -4,6 +4,7 @@ gem 'rack', '1.6.4'
 gem 'sinatra', '1.4.6'
 gem 'sinatra-contrib', '1.4.6'
 gem 'slim', '3.0.6'
+gem 'money', '6.6.1'
 
 group :development do
   gem 'pry', '~>0.10.1', require: 'pry'

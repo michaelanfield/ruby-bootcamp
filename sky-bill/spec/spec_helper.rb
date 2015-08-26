@@ -7,6 +7,10 @@ Bundler.require
 
 
 # Project dependencies
+Dir.glob('./lib/helpers/*.rb').each { |helper_file| require helper_file }
+Dir.glob('./lib/command/*.rb').each { |command_file| require command_file }
+#Dir.glob('./lib/resources/*.rb').each { |_file| require project_file }
+Dir.glob('./lib/service/*.rb').each { |service_file| require service_file }
 Dir.glob('./lib/*.rb').each { |project_file| require project_file }
 
 # Test dependencies
