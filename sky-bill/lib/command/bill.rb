@@ -1,9 +1,11 @@
+require_relative '../helpers/command_helper'
+
 # Represents a sky bill.
 class Bill < SkyBill::CommandHelper
   attr_reader :bill
 
-  def initialize bill = ''
-    @bill = JSON.parse(bill)
+  def initialize customer_bill = nil
+    @bill = customer_bill ? JSON.parse(customer_bill) : {}
   end
 
   def call_charges; CallCharge.new bill[:callCharges.to_s]; end

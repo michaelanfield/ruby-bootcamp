@@ -1,9 +1,11 @@
 require 'sinatra'
 require 'sinatra/cookies'
 
+require_relative 'helpers/skybill_services'
+
 # Handles an authentication request.
 class Authenticate < Sinatra::Base
-  helpers Sinatra::Cookies
+  helpers Sinatra::Cookies, SkyBill::Services
 
   get '/' do
     slim :login
@@ -11,7 +13,9 @@ class Authenticate < Sinatra::Base
 
   get '/bill' do
     redirect('/') unless cookies[:skybill_auth]
-    slim :bill
+
+    customer_bill = bill_service.fetch_bill
+    slim :bill, locals: {:bill => customer_bill}
   end
 
   get '/login' do
