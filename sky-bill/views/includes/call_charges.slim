@@ -1,0 +1,20 @@
+/ Call charge details
+          - if bill.call_charges
+            a#call-breakdown-detail href="#call-breakdown" data-toggle="collapse" aria-expanded="false" aria-controls="call-breakdown"
+              div.row.h3.breakdown-heading
+                div.col-xs-8.col-sm-7 Calls
+                div.col-xs-3.text-right #{bill.call_charges.total}
+                div.col-xs-1 
+                  i.fa.fa-angle-right
+
+            div#call-breakdown.collapse
+              div.row
+                div.col-xs-10.col-xs-offset-1.col-sm-9.col-sm-offset-1
+                  table.table.table-hover.h4
+                    tbody
+                      - for call in bill.call_charges.calls
+                        tr
+                          td #{call.called}
+                          td.text-center #{call.duration}
+                          td.text-right #{call.cost}
+          / Call charge details end ---->

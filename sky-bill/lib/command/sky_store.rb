@@ -1,3 +1,5 @@
+require_relative 'store_item'
+
 # Represents a customers sky store interactions.
 class SkyStore < SkyBill::CommandHelper
 

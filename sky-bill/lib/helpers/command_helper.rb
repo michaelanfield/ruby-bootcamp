@@ -3,7 +3,7 @@ module SkyBill
 
   # Provides helper functionality for command objects e.g. parse_date
   class CommandHelper
-    def parse_date date_string, format = '%d/%m/%Y'
+    def parse_date date_string, format = '%d %b'
       Date.parse(date_string).strftime(format) unless date_string.nil?
     end
 

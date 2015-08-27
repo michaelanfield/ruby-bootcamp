@@ -3,6 +3,10 @@ require 'spec_helper'
 describe 'login.slim' do
   include_context :slim_template_page
 
+  let(:page) do
+    LoginPage.new render
+  end
+
   shared_examples :a_page_with_inputs do |*field_names|
     field_names.each do |field_name|
       it "for #{field_name}" do

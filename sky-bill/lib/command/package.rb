@@ -1,3 +1,6 @@
+require 'money'
+require_relative 'subscription'
+
 # Represents a customers package.
 class Package < SkyBill::CommandHelper
 

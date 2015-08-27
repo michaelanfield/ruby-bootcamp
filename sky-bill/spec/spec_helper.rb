@@ -5,7 +5,6 @@ SimpleCov.command_name 'test:specs'
 require 'bundler'
 Bundler.require
 
-
 # Project dependencies
 Dir.glob('./lib/helpers/*.rb').each { |helper_file| require helper_file }
 Dir.glob('./lib/command/*.rb').each { |command_file| require command_file }

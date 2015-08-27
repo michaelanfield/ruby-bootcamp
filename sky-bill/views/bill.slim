@@ -1,9 +1,134 @@
+doctype html
 html
   head
+    meta charset="utf-8"
     title Your Bill
-  body
-    #container
-      h2 Your Bill
 
-      form action='/logout' method='get'
-        button type="submit" Logout
+    link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'
+
+    link rel="stylesheet" href="/lib/bootstrap/bootstrap.min.css"
+    link rel="stylesheet" href="/lib/font-awesome/font-awesome.min.css"
+
+    link rel="stylesheet" href="/css/app.css"
+  body
+    div.container      
+      div.header
+        img.header-logo src="/images/sky-logo.png" height="60px"
+        h1.header-title Bill
+
+      div.text-right
+        form action='/logout' method='get'
+          button.btn.btn-sm.btn-default type="submit" Logout
+
+      hr
+
+      - if bill.statement
+        h2.statement-period 
+          | Latest bill 
+          small
+            span.statement-period-from #{bill.statement.from}
+            | &mdash; 
+            span.statement-period-to #{bill.statement.to}
+
+      div.row
+        div.col-sm-11.col-sm-offset-1.bill-breakdown
+
+          / Package details
+          - if bill.package
+            div.packages
+              a#package-breakdown-detail href="#package-breakdown" data-toggle="collapse" aria-expanded="false" aria-controls="package-breakdown"
+                div.row.h3.breakdown-heading
+                  div.col-xs-8.col-sm-7.breakdown-heading-title Packages
+                  div.col-xs-3.text-right.breakdown-total #{bill.package.total}
+                  div.col-xs-1 
+                    i.fa.fa-angle-right
+
+              div#package-breakdown.collapse
+                div.row
+                  div.col-xs-10.col-xs-offset-1.col-sm-9.col-sm-offset-1
+                    table.table.table-hover.h4
+                      tbody
+                        - for subscription in bill.package.subscriptions
+                          tr
+                            td.name #{subscription.name}
+                            td.text-right.cost #{subscription.cost}
+          / Package details end ---->
+
+          / Call charge details
+          - if bill.call_charges
+            div.calls
+              a#call-breakdown-detail href="#call-breakdown" data-toggle="collapse" aria-expanded="false" aria-controls="call-breakdown"
+                div.row.h3.breakdown-heading
+                  div.col-xs-8.col-sm-7.breakdown-heading-title Calls
+                  div.col-xs-3.text-right.breakdown-total #{bill.call_charges.total}
+                  div.col-xs-1 
+                    i.fa.fa-angle-right
+
+              div#call-breakdown.collapse
+                div.row
+                  div.col-xs-10.col-xs-offset-1.col-sm-9.col-sm-offset-1
+                    table.table.table-hover.h4
+                      tbody
+                        - for call in bill.call_charges.calls
+                          tr
+                            td #{call.called}
+                            td.text-center #{call.duration}
+                            td.text-right #{call.cost}
+          / Call charge details end ---->
+
+          / Sky store details
+          div.skystore
+            - if bill.sky_store
+              a#skystore-breakdown-detail href="#skystore-breakdown" data-toggle="collapse" aria-expanded="false" aria-controls="skystore-breakdown"
+                div.row.h3.breakdown-heading
+                  div.col-xs-8.col-sm-7.breakdown-heading-title Sky store
+                  div.col-xs-3.text-right.breakdown-total #{bill.sky_store.total}
+                  div.col-xs-1 
+                    i.fa.fa-angle-right
+
+              div#skystore-breakdown.collapse
+                div.row
+                  div.col-xs-10.col-xs-offset-1.col-sm-9.col-sm-offset-1
+                    h4.text-uppercase.store-group-title Rentals
+
+                    table.table.table-hover.h4
+                      tbody
+                        - for rental in bill.sky_store.rentals
+                          tr
+                            td #{rental.title}
+                            td.text-right #{rental.cost}
+
+                    h4.text-uppercase.store-group-title Buy and keep
+
+                    table.table.table-hover.h4
+                      tbody
+                        - for purchase in bill.sky_store.buy_and_keep
+                          tr
+                            td #{purchase.title}
+                            td.text-right #{purchase.cost}
+          / Sky store details end ---->
+
+        hr
+
+        / Bill total due
+        / - if bill.statement
+        /   div.row
+        /     div.col-xs-7.col-sm-offset-1.h2.bill-due-date 
+        /       | Total due #{bill.statement.due}
+        /     div.col-xs-4.col-sm-2.text-right.h2.bill-total
+        /       |  #{bill.total}
+        / Bill total due end ---->
+
+        hr
+
+        / Statement generated
+        / - if bill.statement
+        /   div.row
+        /     div.col-sm-10.col-sm-offset-1.statement-generated
+        /       | Statement generated #{bill.statement.generated}
+        / Statement generated end ---->
+
+        hr
+
+  script src="/lib/jquery/jquery-2.1.4.min.js"
+  script src="/lib/bootstrap/bootstrap.min.js"

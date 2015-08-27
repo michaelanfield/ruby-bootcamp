@@ -1,0 +1,37 @@
+body {
+  font-family: "Open Sans";
+  color: #555;
+  font-size: 16px;
+}
+.header {
+  padding-top: 30px;
+  background-color: #fff;
+}
+.header .header-title {
+  font-family: "Open Sans", inherit;
+  color: #999;
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: bottom;
+  font-size: 22px;
+  margin-bottom: 10px;
+  font-weight: 300;
+}
+.store-group-title {
+  color: #F1351F;
+}
+@media (max-width: 768px) { 
+  .header {
+    text-align: center;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 750px;
+  }
+}

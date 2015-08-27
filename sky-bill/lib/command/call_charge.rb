@@ -1,3 +1,5 @@
+require_relative 'call'
+
 # Represents a call charge containing calls and the total cost.
 class CallCharge < SkyBill::CommandHelper
 

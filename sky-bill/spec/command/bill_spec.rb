@@ -46,19 +46,19 @@ describe Bill do
     let(:statement) { command.statement }
 
     it 'will have a generated date' do
-      expect(statement.generated).to eq '11/01/2015'
+      expect(statement.generated).to eq '11 Jan'
     end
 
     it 'will have a due date' do
-      expect(statement.due).to eq '25/01/2015'
+      expect(statement.due).to eq '25 Jan'
     end
 
     it 'will have a from date' do
-      expect(statement.from).to eq '26/01/2015'
+      expect(statement.from).to eq '26 Jan'
     end
 
     it 'will have a to date' do
-      expect(statement.to).to eq '25/02/2015'
+      expect(statement.to).to eq '25 Feb'
     end
   end
 
