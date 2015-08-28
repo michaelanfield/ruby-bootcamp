@@ -8,7 +8,8 @@ begin
   task features: 'application:start' do
     Cucumber::Rake::Task.new(:cucumber) do |t|
       t.cucumber_opts = ["--format pretty port=#{Application.port}",
-                         '--format html -o coverage/features.html']
+                         '--format html -o coverage/features.html', 
+                         '-b']
     end
 
     Rake::Task[:cucumber].invoke

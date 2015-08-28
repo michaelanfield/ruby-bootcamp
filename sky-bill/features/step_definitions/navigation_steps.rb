@@ -18,6 +18,6 @@ When(/^we navigate to the (.*) page$/) do |page_name|
   goto page_name, page: eval("#{page_name.capitalize}Page")
 end
 
-When(/^we click the (.*) (.*)$/) do |click_target, target_type|
-  page.send("#{click_target}_#{target_type}").click
+When(/^we click the '(.*)' (.*)$/) do |click_target, target_type|
+  page.send("#{click_target.gsub(' ', '_')}_#{target_type}").click
 end

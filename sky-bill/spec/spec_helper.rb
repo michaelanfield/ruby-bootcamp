@@ -13,6 +13,7 @@ Dir.glob('./lib/service/*.rb').each { |service_file| require service_file }
 Dir.glob('./lib/*.rb').each { |project_file| require project_file }
 
 # Test dependencies
+Dir.glob('./spec/support/shared/*.rb').each { |shared_file| require shared_file }
 require 'support/views'
 require 'support/slim_template_page_context'
 require 'support/sinatra_application'

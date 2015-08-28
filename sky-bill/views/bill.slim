@@ -50,8 +50,8 @@ html
                       tbody
                         - for subscription in bill.package.subscriptions
                           tr
-                            td.name #{subscription.name}
-                            td.text-right.cost #{subscription.cost}
+                            td #{subscription.name}
+                            td.text-right #{subscription.cost}
           / Package details end ---->
 
           / Call charge details

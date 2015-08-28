@@ -22,7 +22,7 @@ class BillPage
     end
   end
 
-  element :call_charges_section, id: 'call-breakdown-detail'
+  element :calls_section, id: 'call-breakdown-detail'
   element :calls, css: 'div.calls' do
     element :title, css: 'div.breakdown-heading-title'
     element :cost, css: 'div.breakdown-total'

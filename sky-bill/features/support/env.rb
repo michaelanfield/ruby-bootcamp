@@ -5,6 +5,7 @@ Bundler.require :development
 
 Capybara.default_driver = :selenium
 Capybara.default_selector = :css
+Capybara.ignore_hidden_elements = false
 
 module Helpers
   def without_resynchronize

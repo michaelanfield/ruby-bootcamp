@@ -19,10 +19,10 @@ describe 'bill.slim' do
         "callCharges": {
           "calls": [
             { "called": "07716393769", "duration": "00:23:03", "cost": 2.13 },
-            { "called": "07716393769", "duration": "00:23:03", "cost": 2.13 },
-            { "called": "07716393769", "duration": "00:23:03", "cost": 2.13 },
-            { "called": "07716393769", "duration": "00:23:03", "cost": 2.13 },
-            { "called": "07716393769", "duration": "00:23:03", "cost": 2.13 }
+            { "called": "07716393760", "duration": "00:25:03", "cost": 3.13 },
+            { "called": "07716393761", "duration": "00:21:03", "cost": 2.43 },
+            { "called": "07716393762", "duration": "00:29:03", "cost": 2.11 },
+            { "called": "07716393763", "duration": "00:24:03", "cost": 2.93 }
           ],
           "total": 59.64
         },
@@ -82,12 +82,12 @@ describe 'bill.slim' do
       expect(page.packages.cost).to have_text '£71.40'
     end
 
-    it 'will have a breakdown that is collapsed' do
-      expect(page.packages.breakdown.native.attributes['class'].value).to eq 'collapse'
-    end
+    context '#subscriptions' do
+      let(:subscriptions) { page.packages.breakdown.subscriptions }
 
-    it 'will have 3 subscriptions' do
-      expect(page.packages.breakdown.subscriptions.native.search('tr').size).to eq 3
+      it_behaves_like :a_subscription_record, 1, 'Variety with Movies HD', '£50.00'
+      it_behaves_like :a_subscription_record, 2, 'Sky Talk Anytime', '£5.00'
+      it_behaves_like :a_subscription_record, 3, 'Fibre Unlimited', '£16.40'
     end
   end
 
@@ -100,12 +100,14 @@ describe 'bill.slim' do
       expect(page.calls.cost).to have_text '£59.64'
     end
 
-    it 'will have a breakdown that is collapsed' do
-      expect(page.calls.breakdown.native.attributes['class'].value).to eq 'collapse'
-    end
+    context '#call_history' do
+      let(:call_history) { page.calls.breakdown.call_history }
 
-    it 'will have 5 calls in the call history' do
-      expect(page.calls.breakdown.call_history.native.search('tr').size).to eq 5
+      it_behaves_like :a_call_record, 1, '07716393769', '00:23:03', '£2.13'
+      it_behaves_like :a_call_record, 2, '07716393760', '00:25:03', '£3.13'
+      it_behaves_like :a_call_record, 3, '07716393761', '00:21:03', '£2.43'
+      it_behaves_like :a_call_record, 4, '07716393762', '00:29:03', '£2.11'
+      it_behaves_like :a_call_record, 5, '07716393763', '00:24:03', '£2.93'
     end
   end
 
@@ -118,12 +120,17 @@ describe 'bill.slim' do
       expect(page.sky_store.cost).to have_text '£24.97'
     end
 
-    it 'will have a breakdown that is collapsed' do
-      expect(page.sky_store.breakdown.native.attributes['class'].value).to eq 'collapse'
+    context '#rentals' do
+      let(:store_items) { page.sky_store.breakdown.rentals }
+
+      it_behaves_like :a_store_purchase_item, 1, '50 Shades of Grey', '£4.99'
     end
 
-    # it 'will have 5 calls in the call history' do
-    #   expect(page.calls.breakdown.call_history.native.search('tr').size).to eq 5
-    # end
+    context '#buy_and_keep' do
+      let(:store_items) { page.sky_store.breakdown.buy_and_keep }
+
+      it_behaves_like :a_store_purchase_item, 1, 'That\'s what she said', '£9.99'
+      it_behaves_like :a_store_purchase_item, 2, 'Broke back mountain', '£9.99'
+    end
   end
 end
