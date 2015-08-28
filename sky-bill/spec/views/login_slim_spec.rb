@@ -7,12 +7,8 @@ describe 'login.slim' do
     LoginPage.new render
   end
 
-  shared_examples :a_page_with_inputs do |*field_names|
-    field_names.each do |field_name|
-      it "for #{field_name}" do
-        expect(page.send(field_name)).to be_visible
-      end
-    end
+  it 'will have a header with a title of Lets get you in' do
+    expect(page.header_title.text).to eq "Let's get you in"
   end
 
   it_behaves_like :a_page_with_inputs, 'username', 'password'

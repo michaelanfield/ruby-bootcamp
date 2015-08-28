@@ -5,6 +5,8 @@ class LoginPage
 
   def self.paths; ['/login', '/']; end
 
+  element :header_title, css: 'h1.header-title' 
+  
   text_field :username, label: 'username'
   text_field :password, label: 'password'
   button :login_button, text: 'Login'

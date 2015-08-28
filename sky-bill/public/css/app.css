@@ -20,9 +20,19 @@ body {
 .store-group-title {
   color: #F1351F;
 }
+.login-feature {
+  background-image: url('/images/login-bg.jpg'); 
+  height: 360px;
+}
+.login {
+  margin: 20px;
+}
 @media (max-width: 768px) { 
   .header {
     text-align: center;
+  }
+  .login-feature {
+    background: none;
   }
 }
 @media (min-width: 992px) {

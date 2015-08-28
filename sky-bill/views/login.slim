@@ -1,14 +1,34 @@
+doctype html
 html
   head
+    meta charset="utf-8"
     title Sign in
-  body
-    div#container
-      h2 Login to your account
-      
-      form.login method='post' action='/login'
-        label Username
-        input type='text' name='username'
-        label Password
-        input type='password' name='password'
 
-        button type='submit' Login
+    link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'
+
+    link rel="stylesheet" href="/lib/bootstrap/bootstrap.min.css"
+    link rel="stylesheet" href="/lib/font-awesome/font-awesome.min.css"
+
+    link rel="stylesheet" href="/css/app.css"
+  body
+    div.container      
+      div.header
+        img.header-logo src="/images/sky-logo.png" height="60px"
+        h1.header-title Let's get you in
+
+      hr
+
+      div.row
+        div.col-xs-12
+          div.login-feature
+            div.row 
+              div.col-sm-4
+                form.login method='post' action='/login'
+                  div.form-group
+                    label.hidden Username
+                    input.form-control type='text' name='username' placeholder='Email address'
+                  div.form-group
+                    label.hidden Password
+                    input.form-control type='password' name='password' placeholder='Password'
+
+                  button.btn.btn-primary.btn-block type='submit' Login
