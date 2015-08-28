@@ -23,5 +23,8 @@ Feature: Expandable bill section
     Given we are logged in
     And we will be on the bill page
     When we click the sky_store section
-    Then we will see a 'rentals' group with 1 item
-    And we will see a 'buy and keep' group with 2 items 
+    Then we will see a 'rentals' group with 1 items and a title of 'Rentals'
+    And the 'rentals' group will contain '50 Shades of Grey' at a cost of £4.99
+    And we will see a 'buy and keep' group with 2 items and a title of 'Buy and keep'
+    And the 'buy and keep' group will contain 'That's what she said' at a cost of £9.99
+    And the 'buy and keep' group will contain 'Broke back mountain' at a cost of £9.99

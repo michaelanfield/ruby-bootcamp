@@ -89,23 +89,25 @@ html
               div#skystore-breakdown.collapse
                 div.row
                   div.col-xs-10.col-xs-offset-1.col-sm-9.col-sm-offset-1
-                    h4.text-uppercase.store-group-title Rentals
+                    div.rentals
+                      h4.text-uppercase.store-group-title Rentals
 
-                    table.table.table-hover.h4
-                      tbody
-                        - for rental in bill.sky_store.rentals
-                          tr
-                            td #{rental.title}
-                            td.text-right #{rental.cost}
+                      table.table.table-hover.h4
+                        tbody
+                          - for rental in bill.sky_store.rentals
+                            tr.store-item
+                              td #{rental.title}
+                              td.text-right #{rental.cost}
 
-                    h4.text-uppercase.store-group-title Buy and keep
+                    div.buy-and-keep
+                      h4.text-uppercase.store-group-title Buy and keep
 
-                    table.table.table-hover.h4
-                      tbody
-                        - for purchase in bill.sky_store.buy_and_keep
-                          tr
-                            td #{purchase.title}
-                            td.text-right #{purchase.cost}
+                      table.table.table-hover.h4
+                        tbody
+                          - for purchase in bill.sky_store.buy_and_keep
+                            tr.store-item
+                              td #{purchase.title}
+                              td.text-right #{purchase.cost}
           / Sky store details end ---->
 
         hr

@@ -36,7 +36,12 @@ class BillPage
     element :title, css: 'div.breakdown-heading-title'
     element :cost, css: 'div.breakdown-total'
     element :breakdown, id: 'skystore-breakdown' do
-      # element :call_history, css: 'table'
+      element :rentals, css: 'div.rentals' do
+        element :title, css: '.store-group-title'
+      end
+      element :buy_and_keep, css: 'div.buy-and-keep' do
+        element :title, css: '.store-group-title'
+      end
     end
   end
 

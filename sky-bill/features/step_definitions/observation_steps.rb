@@ -12,3 +12,17 @@ Then(/^we will see (.*) for a duration of (\d+:\d+:\d+) at a cost of (£\d+\.\d+
   expect(page.calls.breakdown.call_history).to have_content duration
   expect(page.calls.breakdown.call_history).to have_content cost
 end
+
+Then(/^we will see a '(.*)' group with (\d+) items and a title of '(.*)'$/) do |group_name, number_of_items, title|
+  group_name_selector = group_name.gsub(' ', '_')
+
+  expect(page.sky_store.breakdown.send(group_name_selector).all('.store-item').size).to eq number_of_items.to_i
+  expect(page.sky_store.breakdown.send(group_name_selector).title.text).to eq title.upcase
+end
+
+Then(/^the '(.*)' group will contain '(.*)' at a cost of (£\d+\.\d+)$/) do |group_name, text, cost|
+  group_text = page.sky_store.breakdown.send(group_name.gsub(' ', '_')).text
+
+  expect(group_text).to include text
+  expect(group_text).to include cost
+end
