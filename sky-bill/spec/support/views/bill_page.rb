@@ -45,5 +45,12 @@ class BillPage
     end
   end
 
+  element :statement_summary, css: 'div.statement-summary' do
+    element :due_date, css: 'div.bill-due-date'
+    element :total_cost, css: 'div.bill-total'
+  end
+
+  element :statement_generated, css: 'div.statement-generated'
+
   def arrived; 'Your Bill' == title; end
 end

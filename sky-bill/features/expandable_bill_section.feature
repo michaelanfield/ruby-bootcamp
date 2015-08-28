@@ -18,22 +18,9 @@ Feature: Expandable bill section
     When we click the 'calls' section
     Then the 'calls' section content is shown
 
-
-
-    #Then we will see 07716393769 for a duration of 00:23:03 at a cost of £2.13
-    #And we will see 02074351359 for a duration of 00:23:03 at a cost of £2.13
-
   Scenario: Expand sky store
     Given we are logged in
     And we will be on the bill page
     And the 'sky store' section content is hidden
     When we click the 'sky store' section
     Then the 'sky store' section content is shown
-    
-
-
-    #Then we will see a 'rentals' group with 1 items and a title of 'Rentals'
-    #And the 'rentals' group will contain '50 Shades of Grey' at a cost of £4.99
-    #And we will see a 'buy and keep' group with 2 items and a title of 'Buy and keep'
-    #And the 'buy and keep' group will contain 'That's what she said' at a cost of £9.99
-    #And the 'buy and keep' group will contain 'Broke back mountain' at a cost of £9.99

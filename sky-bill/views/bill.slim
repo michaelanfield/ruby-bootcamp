@@ -77,8 +77,8 @@ html
           / Call charge details end ---->
 
           / Sky store details
-          div.skystore
-            - if bill.sky_store
+          - if bill.sky_store
+            div.skystore
               a#skystore-breakdown-detail href="#skystore-breakdown" data-toggle="collapse" aria-expanded="false" aria-controls="skystore-breakdown"
                 div.row.h3.breakdown-heading
                   div.col-xs-8.col-sm-7.breakdown-heading-title Sky store
@@ -110,27 +110,27 @@ html
                               td.text-right #{purchase.cost}
           / Sky store details end ---->
 
-        hr
+      hr
 
-        / Bill total due
-        / - if bill.statement
-        /   div.row
-        /     div.col-xs-7.col-sm-offset-1.h2.bill-due-date 
-        /       | Total due #{bill.statement.due}
-        /     div.col-xs-4.col-sm-2.text-right.h2.bill-total
-        /       |  #{bill.total}
-        / Bill total due end ---->
+      / Bill total due
+      - if bill.statement
+        div.row.statement-summary
+          div.col-xs-7.col-sm-offset-1.h2.bill-due-date 
+            | Total due #{bill.statement.due}
+          div.col-xs-4.col-sm-2.text-right.h2.bill-total
+            | #{bill.total}
+      / Bill total due end ---->
 
-        hr
+      hr
 
-        / Statement generated
-        / - if bill.statement
-        /   div.row
-        /     div.col-sm-10.col-sm-offset-1.statement-generated
-        /       | Statement generated #{bill.statement.generated}
-        / Statement generated end ---->
+      / Statement generated
+      - if bill.statement
+        div.row
+          div.col-sm-10.col-sm-offset-1.statement-generated
+            | Statement generated #{bill.statement.generated}
+      / Statement generated end ---->
 
-        hr
+      hr
 
   script src="/lib/jquery/jquery-2.1.4.min.js"
   script src="/lib/bootstrap/bootstrap.min.js"

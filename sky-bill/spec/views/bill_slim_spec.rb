@@ -133,4 +133,20 @@ describe 'bill.slim' do
       it_behaves_like :a_store_purchase_item, 2, 'Broke back mountain', '£9.99'
     end
   end
+
+  describe 'will have a statement summary' do
+    let(:summary) { page.statement_summary }
+
+    it 'with a due date' do
+      expect(summary.due_date.text).to eq 'Total due 25 Jan'
+    end
+
+    it 'with a total cost' do
+      expect(summary.total_cost.text).to eq '£136.03'
+    end
+  end
+
+  it 'will have the statement generated date' do
+    expect(page.statement_generated.text).to eq 'Statement generated 11 Jan'
+  end
 end
